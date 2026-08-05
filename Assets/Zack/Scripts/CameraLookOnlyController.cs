@@ -1,18 +1,18 @@
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-#endif
 
 namespace StarterAssets
 {
-#if ENABLE_INPUT_SYSTEM
 	[RequireComponent(typeof(PlayerInput))]
-#endif
 	public class CameraLookOnlyController : MonoBehaviour
 	{
 		[Header("Camera")]
 		[Tooltip("The follow target used by Cinemachine")]
 		public GameObject CinemachineCameraTarget;
+		[Tooltip("The actual camera to apply pitch to (e.g. MainCamera child)")]
+		public Camera PitchCamera;
+		[Tooltip("World Y angle the camera faces at start, independent of object placement")]
+		public float StartingYaw = 0.0f;
 		[Tooltip("Rotation speed of the look input")]
 		public float RotationSpeed = 1.0f;
 
@@ -29,9 +29,11 @@ namespace StarterAssets
 		public float RightClamp = 90.0f;
 
 		private StarterAssetsInputs _input;
-#if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
-#endif
+
+		// skip look input for a couple frames after cursor re-locks to absorb the snap delta
+		private int _skipLookFrames;
+		private bool _wasLookEnabled;
 
 		private float _cinemachineTargetPitch;
 		private float _currentYaw;
@@ -39,32 +41,22 @@ namespace StarterAssets
 
 		private const float _threshold = 0.01f;
 
-		private bool IsCurrentDeviceMouse
-		{
-			get
-			{
-#if ENABLE_INPUT_SYSTEM
-				return _playerInput.currentControlScheme == "KeyboardMouse";
-#else
-				return false;
-#endif
-			}
-		}
+		private bool IsCurrentDeviceMouse => _playerInput.currentControlScheme == "KeyboardMouse";
 
 		private void Start()
 		{
 			_input = GetComponent<StarterAssetsInputs>();
-#if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
-#endif
 
-			_startYaw = NormalizeAngle(transform.eulerAngles.y);
+			if (PitchCamera == null)
+				PitchCamera = GetComponentInChildren<Camera>();
+
+			_startYaw = StartingYaw;
 			_currentYaw = _startYaw;
+			_cinemachineTargetPitch = 0.0f;
 
-			if (CinemachineCameraTarget != null)
-			{
-				_cinemachineTargetPitch = NormalizeAngle(CinemachineCameraTarget.transform.localEulerAngles.x);
-			}
+			// snap transforms to starting orientation immediately
+			transform.rotation = Quaternion.Euler(0.0f, _currentYaw, 0.0f);
 		}
 
 		private void LateUpdate()
@@ -84,6 +76,18 @@ namespace StarterAssets
 
 		private void CameraRotation()
 		{
+			bool lookEnabled = _input.cursorInputForLook;
+			if (lookEnabled && !_wasLookEnabled)
+				_skipLookFrames = 2;
+			_wasLookEnabled = lookEnabled;
+
+			if (_skipLookFrames > 0)
+			{
+				_skipLookFrames--;
+				_input.look = Vector2.zero;
+				return;
+			}
+
 			if (_input.look.sqrMagnitude < _threshold)
 			{
 				return;
@@ -97,10 +101,11 @@ namespace StarterAssets
 			_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
 			_currentYaw = Mathf.Clamp(_currentYaw, _startYaw + LeftClamp, _startYaw + RightClamp);
 
+			var pitchRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
 			if (CinemachineCameraTarget != null)
-			{
-				CinemachineCameraTarget.transform.localRotation = Quaternion.Euler(_cinemachineTargetPitch, 0.0f, 0.0f);
-			}
+				CinemachineCameraTarget.transform.localRotation = pitchRotation;
+			if (PitchCamera != null)
+				PitchCamera.transform.localRotation = pitchRotation;
 
 			transform.rotation = Quaternion.Euler(0.0f, _currentYaw, 0.0f);
 		}

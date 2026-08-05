@@ -1433,10 +1433,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5431e3d69285db941902cbedd16389ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  targetSceneName: 
-  loadingScreenUI: {fileID: 0}
-  loadingProgressBar: {fileID: 0}
-  minimumLoadingScreenTime: 0.75
+  targetSceneName: Office
+  loadingScreenUI: {fileID: 1380485670}
+  loadingProgressBar: {fileID: 522107475}
+  minimumLoadingScreenTime: 1
 --- !u!1 &195648693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,7 +1853,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.083333336
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 4269e105e794a37449c51a1a766be2b3, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 21939b21bf52ffe41890b706fe0bcfe8, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &308014199
 Transform:
@@ -3255,9 +3255,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
-  m_WholeNumbers: 1
-  m_Value: 1
+  m_MaxValue: 1
+  m_WholeNumbers: 0
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7808,7 +7808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1380485671
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9873,7 +9873,7 @@ RectTransform:
   m_Father: {fileID: 508925623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

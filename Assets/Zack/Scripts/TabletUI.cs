@@ -47,9 +47,11 @@ public class TabletUI : MonoBehaviour
         ShowOnly(donationPanel);
     }
 
+    public bool IsOpen => tablet != null && tablet.activeSelf;
+
     public void OpenTablet()
     {
-        tablet.SetActive(tablet.activeSelf ? false : true);
+        tablet.SetActive(!tablet.activeSelf);
     }
     private void ShowOnly(GameObject panelToShow)
     {
