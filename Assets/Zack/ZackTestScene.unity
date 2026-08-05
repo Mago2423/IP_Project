@@ -1591,6 +1591,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43816d22fc16960469750ae64f2184ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  doorAnimator: {fileID: 0}
+  openBoolName: IsOpen
+  playerTag: Player
+  npcTag: NPC
 --- !u!1 &393721670
 GameObject:
   m_ObjectHideFlags: 0
