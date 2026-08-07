@@ -28,10 +28,10 @@ public static class DialogueSampleAssetCreator
 
         List<DialogueNode> nodes = new()
         {
-            CreateNode("start", "Officer Rendell", "Greetings player, My name is Officer Rendell and today we request your detective instinct to identify what scam this criminal has done.", "movement"),
+            CreateNode("start", "Officer Rendell", "Greetings player, My name is Officer Rendell and today we request your detective instinct to identify what scam this criminal has committed.", "movement"),
             CreateNode("movement", "Officer Rendell", "You can use WASD to move around the room. Press J to open up your tablet.", "tablet"),
             CreateNode("tablet", "Officer Rendell", "You may scroll through the tablet to look for the different types of scam that’s been more and more common.", "questions"),
-            CreateNode("questions", "Officer Rendell", "You may ask questions to the criminal and try to see if he could shed light into his wrong doing.", "leave_room"),
+            CreateNode("questions", "Officer Rendell", "You may ask questions to the criminal and try to see if he could shed light on his wrongdoing.", "leave_room"),
             CreateNode("leave_room", "Officer Rendell", "Once you’ve felt that you’re ready or have no further questions, you may press T to leave the interrogation room.", "help"),
             CreateNode("help", "Officer Rendell", "Now if there’s anything you are unsure of, I would be standing at the corner of the room. You may approach me anytime.", "", true)
         };
@@ -57,7 +57,7 @@ public static class DialogueSampleAssetCreator
         {
             CreateNode("start", "Criminal Jamal", "What do you want?", "", false, openingChoices),
             CreateNode("answer_1", "Criminal Jamal", "If I told you, it wouldn’t make it fun right?", "start"),
-            CreateNode("answer_2", "Criminal Jamal", "I don’t know. What I do know is that it’s really easy to make elderlies fall prey when money’s involved.", "start"),
+            CreateNode("answer_2", "Criminal Jamal", "I don’t know. What I do know is that it’s really easy to make elderly people fall prey when money’s involved.", "start"),
             CreateNode("answer_3", "Criminal Jamal", "Uhhhhh.... Mee Pok with Tomato Sauce from Hougang Block ABC", "start")
         };
 
@@ -82,7 +82,7 @@ public static class DialogueSampleAssetCreator
         {
             CreateNode("start", "Criminal Jamal", "What do you want?", "", false, evidenceChoices),
             CreateNode("answer_1", "Criminal Jamal", "Uhmmmm Maybe, I think I did. I don’t really remember.", "start"),
-            CreateNode("answer_2", "Criminal Jamal", "WHAT, HOW DID YOU KNOW? I mean, I would never treat an elderly like that, that would make them really stressed.", "start"),
+            CreateNode("answer_2", "Criminal Jamal", "WHAT, HOW DID YOU KNOW? I mean, I would never treat an elderly person like that, that would make them really stressed.", "start"),
             CreateNode("answer_3", "Criminal Jamal", "Huh? I have no idea what you’re talking about. I only have love for Lee Wei Goon. No one else.", "start")
         };
 
@@ -103,7 +103,7 @@ public static class DialogueSampleAssetCreator
 
         List<DialogueNode> nodes = new()
         {
-            CreateNode("start", "Doctor Strange", "Would you like to return back to the mortal realm?", "", false, choices)
+            CreateNode("start", "Doctor Strange", "Would you like to return to the mortal realm?", "", false, choices)
         };
 
         SetPrivateField(asset, "nodes", nodes);

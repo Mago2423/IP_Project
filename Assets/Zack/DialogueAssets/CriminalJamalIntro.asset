@@ -49,7 +49,7 @@ MonoBehaviour:
   - nodeId: answer_2
     speaker: Criminal Jamal
     line: "I don\u2019t know. What I do know is that it\u2019s really easy to make
-      elderlies fall prey when money\u2019s involved."
+      elderly people fall prey when money\u2019s involved."
     endConversation: 0
     choices: []
     nextNodeId: start

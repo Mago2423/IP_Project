@@ -15,7 +15,8 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
             return;
         }
 
-        if (dialogueData == null)
+        DialogueData resolvedDialogue = ResolveDialogueData();
+        if (resolvedDialogue == null)
         {
             Debug.LogWarning($"{nameof(DialogueTrigger)} on {name} is missing Dialogue Data.", this);
             return;
@@ -28,7 +29,18 @@ public class DialogueTrigger : MonoBehaviour, IInteractable
             return;
         }
 
-        manager.StartDialogue(dialogueData, startNodeId, this);
+        manager.StartDialogue(resolvedDialogue, startNodeId, this);
         _hasTriggered = true;
+    }
+
+    private DialogueData ResolveDialogueData()
+    {
+        CriminalDialogueSwap dialogueSwap = GetComponent<CriminalDialogueSwap>();
+        if (dialogueSwap != null && dialogueSwap.CurrentDialogue != null)
+        {
+            return dialogueSwap.CurrentDialogue;
+        }
+
+        return dialogueData;
     }
 }

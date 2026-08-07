@@ -16,7 +16,7 @@ MonoBehaviour:
   nodes:
   - nodeId: start
     speaker: Doctor Strange
-    line: Would you like to return back to the mortal realm?
+    line: Would you like to return to the mortal realm?
     endConversation: 0
     choices:
     - text: Yes

@@ -53,47 +53,16 @@ public class Player : MonoBehaviour
         if (_isDialogueMode)
         {
             EnforceDialogueInputLock();
-            HandleDialogueChoiceHotkeys();
         }
 
         UpdateRaycast();
     }
 
-    private void HandleDialogueChoiceHotkeys()
+    public CriminalDialogueSwap jamalSwap;
+
+    void OnEvidenceComplete()
     {
-        if (dialogueManager == null || !dialogueManager.IsDialogueActive)
-        {
-            return;
-        }
-
-#if ENABLE_INPUT_SYSTEM
-        Keyboard keyboard = Keyboard.current;
-        if (keyboard == null)
-        {
-            return;
-        }
-
-        if (keyboard.escapeKey.wasPressedThisFrame)
-        {
-            dialogueManager.EndDialogue();
-            return;
-        }
-
-        if (!dialogueManager.CurrentNodeHasChoices)
-        {
-            return;
-        }
-
-        if (keyboard.digit1Key.wasPressedThisFrame) dialogueManager.SelectChoice(0);
-        else if (keyboard.digit2Key.wasPressedThisFrame) dialogueManager.SelectChoice(1);
-        else if (keyboard.digit3Key.wasPressedThisFrame) dialogueManager.SelectChoice(2);
-        else if (keyboard.digit4Key.wasPressedThisFrame) dialogueManager.SelectChoice(3);
-        else if (keyboard.digit5Key.wasPressedThisFrame) dialogueManager.SelectChoice(4);
-        else if (keyboard.digit6Key.wasPressedThisFrame) dialogueManager.SelectChoice(5);
-        else if (keyboard.digit7Key.wasPressedThisFrame) dialogueManager.SelectChoice(6);
-        else if (keyboard.digit8Key.wasPressedThisFrame) dialogueManager.SelectChoice(7);
-        else if (keyboard.digit9Key.wasPressedThisFrame) dialogueManager.SelectChoice(8);
-#endif
+        jamalSwap.UseEvidenceDialogue();
     }
 
     private void EnforceDialogueInputLock()

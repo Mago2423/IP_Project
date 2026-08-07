@@ -52,8 +52,8 @@ MonoBehaviour:
     nextNodeId: start
   - nodeId: answer_2
     speaker: Criminal Jamal
-    line: WHAT, HOW DID YOU KNOW? I mean, I would never treat an elderly like that,
-      that would make them really stressed.
+    line: WHAT, HOW DID YOU KNOW? I mean, I would never treat an elderly person like
+      that, that would make them really stressed.
     endConversation: 0
     choices: []
     nextNodeId: start
