@@ -3,7 +3,12 @@ guid: 6c020fa8662863a4d814c084c29e90a4
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TextureAtlus
+    second: {fileID: 2100000, guid: e8678e6355ab1a04ab99acad5dc28473, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
