@@ -119,6 +119,8 @@ public class DialogueView : MonoBehaviour
         RebuildChoiceButtons(node);
 
         UpdatePromptVisibility(node);
+
+        BindLinearPrompt();
     }
 
     public void Hide()
@@ -145,6 +147,18 @@ public class DialogueView : MonoBehaviour
         {
             rootPanel.SetActive(false);
         }
+    }
+
+    private void BindLinearPrompt()
+    {
+        Button button = GetPromptButton(nextPrompt);
+        if (button == null)
+        {
+            return;
+        }
+
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => _onAdvance?.Invoke());
     }
 
     private void RebuildChoiceButtons(DialogueNode node)
@@ -208,7 +222,7 @@ public class DialogueView : MonoBehaviour
             return;
         }
 
-        Button button = prompt.GetComponent<Button>();
+        Button button = GetPromptButton(prompt);
         if (button == null)
         {
             Debug.LogWarning($"Prompt '{prompt.name}' on {name} is missing a Button component.", prompt);
@@ -222,7 +236,28 @@ public class DialogueView : MonoBehaviour
         if (label != null && choiceIndex >= 0 && choiceIndex < node.Choices.Count)
         {
             label.text = node.Choices[choiceIndex].Text;
+            label.enableAutoSizing = true;
+            label.fontSizeMin = 12f;
+            label.fontSizeMax = 24f;
+            label.textWrappingMode = TextWrappingModes.NoWrap;
+            label.overflowMode = TextOverflowModes.Ellipsis;
         }
+    }
+
+    private Button GetPromptButton(GameObject prompt)
+    {
+        if (prompt == null)
+        {
+            return null;
+        }
+
+        Button button = prompt.GetComponent<Button>();
+        if (button != null)
+        {
+            return button;
+        }
+
+        return prompt.GetComponentInChildren<Button>(true);
     }
 
     private void SetModePanels(DialogueNode node)
@@ -289,6 +324,11 @@ public class DialogueView : MonoBehaviour
             if (tmpButtonText != null)
             {
                 tmpButtonText.text = displayText;
+                tmpButtonText.enableAutoSizing = true;
+                tmpButtonText.fontSizeMin = 12f;
+                tmpButtonText.fontSizeMax = 24f;
+                tmpButtonText.textWrappingMode = TextWrappingModes.NoWrap;
+                tmpButtonText.overflowMode = TextOverflowModes.Ellipsis;
             }
             else
             {
@@ -305,7 +345,7 @@ public class DialogueView : MonoBehaviour
     {
         if (confirmPrompt != null)
         {
-            Button confirmButton = confirmPrompt.GetComponent<Button>();
+            Button confirmButton = GetPromptButton(confirmPrompt);
             if (confirmButton != null)
             {
                 confirmButton.onClick.RemoveAllListeners();
@@ -314,7 +354,7 @@ public class DialogueView : MonoBehaviour
 
         if (cancelPrompt != null)
         {
-            Button cancelButton = cancelPrompt.GetComponent<Button>();
+            Button cancelButton = GetPromptButton(cancelPrompt);
             if (cancelButton != null)
             {
                 cancelButton.onClick.RemoveAllListeners();

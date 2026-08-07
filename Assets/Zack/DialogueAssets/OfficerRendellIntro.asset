@@ -17,7 +17,7 @@ MonoBehaviour:
   - nodeId: start
     speaker: Officer Rendell
     line: Greetings player, My name is Officer Rendell and today we request your
-      detective instinct to identify what scam this criminal has done.
+      detective instinct to identify what scam this criminal has committed.
     endConversation: 0
     choices: []
     nextNodeId: movement
@@ -37,7 +37,7 @@ MonoBehaviour:
   - nodeId: questions
     speaker: Officer Rendell
     line: You may ask questions to the criminal and try to see if he could shed light
-      into his wrong doing.
+      on his wrongdoing.
     endConversation: 0
     choices: []
     nextNodeId: leave_room
