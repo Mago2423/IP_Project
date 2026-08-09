@@ -109,6 +109,12 @@ public class Player : MonoBehaviour
 
         if (!IsHitting) return;
 
+        if (CurrentHit.collider.TryGetComponent(out OfficerJamalNav officerJamalNav))
+        {
+            officerJamalNav.Interact();
+            return;
+        }
+
         if (CurrentHit.collider.TryGetComponent(out MessageDialogue messageDialogue))
         {
             messageDialogue.Interact();
