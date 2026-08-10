@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Zack/Scenes/Office.unity
     guid: 9f345f64c40580a48ad33bcea2d6756c
+  - enabled: 1
+    path: Assets/Zack/Scenes/VirtualWorld.unity
+    guid: ba6d02ce23ee8e44b8fc38f3a239d040
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
