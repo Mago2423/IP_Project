@@ -15,7 +15,7 @@ MonoBehaviour:
   dialogueId: linear_dialogue
   nodes:
   - nodeId: start
-    speaker: OfficerRenel
+    speaker: Officer Renel
     line: Welcome to the Interogation room detective! Here is where you will ask
       the criminal questions and after collecting evidence, accuse them of the scam
       they commited.
@@ -23,27 +23,27 @@ MonoBehaviour:
     choices: []
     nextNodeId: line_2
   - nodeId: line_2
-    speaker: OfficerRenel
+    speaker: Officer Renel
     line: First, Press T to open up your Tablet. This will show you the many types
       of scams as well as the evidence they leave behind.
     endConversation: 0
     choices: []
     nextNodeId: line_3
   - nodeId: line_3
-    speaker: OfficerRenel
+    speaker: Officer Renel
     line: When the criminal comes in the room, talk to them and ask them some questions.
     endConversation: 0
     choices: []
     nextNodeId: line_4
   - nodeId: line_4
-    speaker: OfficerRenel
+    speaker: Officer Renel
     line: When ever your ready to collect evidence, talk to Dr.Strange to go back
       to the office.
     endConversation: 0
     choices: []
     nextNodeId: decision
   - nodeId: decision
-    speaker: OfficerRenel
+    speaker: Officer Renel
     line: Are you ready to interogate the criminal?
     endConversation: 0
     choices:
