@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: TextureAtlus
-    second: {fileID: 2100000, guid: 983cf95c25c68664ba8b04492603ad4f, type: 2}
+    second: {fileID: 2100000, guid: e7b2877432a4b7c469b16c21a1d224e6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
