@@ -23,7 +23,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
     [SerializeField] private float patrolPointPauseDuration = 1.5f;
 
     [Header("Interaction")]
-    [SerializeField] private DialogueTrigger dialogueTrigger;
+    [SerializeField] private DialogueInteractable dialogueInteractable;
 
     [SerializeField] private OfficerState currentState = OfficerState.Patrolling;
     [SerializeField] private int patrolIndex = -1;
@@ -43,6 +43,11 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         if (agent == null)
         {
             agent = GetComponent<NavMeshAgent>();
+        }
+
+        if (dialogueInteractable == null)
+        {
+            dialogueInteractable = GetComponent<DialogueInteractable>();
         }
 
         if (agent != null)
@@ -76,7 +81,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
             return;
         }
 
-        if (!hasStartedSequence && dialogueTrigger != null && dialogueTrigger.HasTriggered)
+        if (!hasStartedSequence && dialogueInteractable != null && dialogueInteractable.HasTriggered)
         {
             StartDoorSequenceAfterDialogue();
         }
@@ -108,9 +113,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
 
         StartDoorSequenceAfterDialogue();
 
-        if (dialogueTrigger != null)
+        if (dialogueInteractable != null)
         {
-            dialogueTrigger.Interact();
+            dialogueInteractable.Interact();
         }
     }
 
