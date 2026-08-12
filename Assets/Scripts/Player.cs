@@ -53,9 +53,17 @@ public class Player : MonoBehaviour
 
     public CriminalDialogueSwap jamalSwap;
 
-    void OnEvidenceComplete()
+    public void OnEvidenceComplete()
     {
-        jamalSwap.UseEvidenceDialogue();
+        if (jamalSwap != null)
+        {
+            jamalSwap.UseEvidenceDialogue();
+        }
+
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.CollectEvidence("jamal_evidence");
+        }
     }
 
     private void EnforceDialogueInputLock()
