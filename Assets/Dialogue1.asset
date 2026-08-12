@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893a16f71a04c547a5b13e272c5d853, type: 3}
+  m_Name: Dialogue1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueId: linear_dialogue
+  nodes:
+  - nodeId: start
+    speaker: NPC
+    line: Hello, how's your day.
+    endConversation: 0
+    choices: []
+    nextNodeId: line_2
+  - nodeId: line_2
+    speaker: NPC
+    line: follow me to the diddy chamber
+    endConversation: 0
+    choices: []
+    nextNodeId: line_3
+  - nodeId: line_3
+    speaker: NPC
+    line: cya around
+    endConversation: 1
+    choices: []
+    nextNodeId: 

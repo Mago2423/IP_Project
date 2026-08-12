@@ -13,11 +13,18 @@ MonoBehaviour:
   m_Name: LinearDialogueTemplate
   m_EditorClassIdentifier: Assembly-CSharp::LinearDialogueTemplate
   dialogueId: linear_dialogue
-  speaker: NPC
-  lines: []
+  speaker: OfficerRenel
+  lines:
+  - Welcome to the Interogation room detective! Here is where you will ask the criminal
+    questions and after collecting evidence, accuse them of the scam they commited.
+  - First, Press T to open up your Tablet. This will show you the many types of scams
+    as well as the evidence they leave behind.
+  - When the criminal comes in the room, talk to them and ask them some questions.
+  - When ever your ready to collect evidence, talk to Dr.Strange to go back to the
+    office.
   includeFinalDecision: 1
-  decisionLine: Would you like to teleport to the Interogation Room?
+  decisionLine: Are you ready to interogate the criminal?
   confirmText: Yes
   denyText: No
-  confirmActionType: 2
+  confirmActionType: 3
   confirmActionValue: 

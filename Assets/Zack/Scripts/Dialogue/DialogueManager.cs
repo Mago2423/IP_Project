@@ -16,6 +16,11 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
+        if (player == null)
+        {
+            player = FindFirstObjectByType<Player>();
+        }
+
         if (dialogueView != null)
         {
             dialogueView.Hide();
@@ -27,6 +32,11 @@ public class DialogueManager : MonoBehaviour
         if (dialogueData == null)
         {
             return;
+        }
+
+        if (player == null)
+        {
+            player = FindFirstObjectByType<Player>();
         }
 
         _activeDialogue = dialogueData;
@@ -107,6 +117,11 @@ public class DialogueManager : MonoBehaviour
         if (dialogueView != null)
         {
             dialogueView.Hide();
+        }
+
+        if (player == null)
+        {
+            player = FindFirstObjectByType<Player>();
         }
 
         if (player != null)

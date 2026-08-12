@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
         if (_isDialogueMode)
         {
             EnforceDialogueInputLock();
+            EnsureDialogueCursorState();
         }
 
         UpdateRaycast();
@@ -89,7 +90,7 @@ public class Player : MonoBehaviour
         bool shouldShowPrompt = false;
         if (!_isDialogueMode && IsHitting)
         {
-            shouldShowPrompt = HasTagInHierarchy(CurrentHit.collider != null ? CurrentHit.collider.transform : null, interactableTag);
+            shouldShowPrompt = TryGetInteractable(CurrentHit.collider, out _) || HasTagInHierarchy(CurrentHit.collider != null ? CurrentHit.collider.transform : null, interactableTag);
         }
 
         SetInteractPromptVisible(shouldShowPrompt);
@@ -134,6 +135,11 @@ public class Player : MonoBehaviour
     // called by PlayerInput via SendMessages when CamaraLock action fires
     void OnCamaraLock()
     {
+        if (_isDialogueMode)
+        {
+            return;
+        }
+
         SetCameraLock();
     }
 
@@ -197,12 +203,13 @@ public class Player : MonoBehaviour
 
     void OnJournal()
     {
-        if (tabletUI != null)
+        if (tabletUI == null)
         {
-            tabletUI.OpenTablet();
-            // unlock camera when journal opens, re-lock when it closes
-            SetCameraLock(!tabletUI.IsOpen);
+            return;
         }
+
+        tabletUI.OpenTablet();
+        SetCameraLock(!tabletUI.IsOpen);
     }
 
     // pass true to lock camera (hide cursor), false to unlock (show cursor), or no arg to toggle
@@ -226,10 +233,17 @@ public class Player : MonoBehaviour
         if (isActive)
         {
             EnforceDialogueInputLock();
+            EnsureDialogueCursorState();
         }
 
         // Dialogue mode keeps the camera still and unlocks the mouse for UI interaction.
         SetCameraLock(!isActive);
+    }
+
+    private static void EnsureDialogueCursorState()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
 

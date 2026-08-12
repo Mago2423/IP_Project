@@ -84,12 +84,14 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        UpdateCameraTurnInput();
-
         if (dialogueManager != null && dialogueManager.IsDialogueActive)
         {
+            isTurningLeft = false;
+            isTurningRight = false;
             return;
         }
+
+        UpdateCameraTurnInput();
 
         if (mainCamera == null || agent == null)
         {
@@ -219,12 +221,24 @@ public class Controller : MonoBehaviour
     // called by PlayerInput via SendMessages when AKey action fires
     private void OnAKey(InputValue value)
     {
+        if (dialogueManager != null && dialogueManager.IsDialogueActive)
+        {
+            isTurningLeft = false;
+            return;
+        }
+
         isTurningLeft = value != null && value.isPressed;
     }
 
     // called by PlayerInput via SendMessages when DKey action fires
     private void OnDKey(InputValue value)
     {
+        if (dialogueManager != null && dialogueManager.IsDialogueActive)
+        {
+            isTurningRight = false;
+            return;
+        }
+
         isTurningRight = value != null && value.isPressed;
     }
 

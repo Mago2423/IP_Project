@@ -1985,7 +1985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a09cf3fe87ae3d7499937fbffdb41d9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueInteractable
-  dialogueData: {fileID: 11400000, guid: b037f52c63c25da4282ecbfa42993f5e, type: 2}
+  dialogueData: {fileID: 11400000, guid: c2fb9e4d91140374c8f3777f85ad1aa8, type: 2}
   startNodeId: 
   oneShot: 0
 --- !u!114 &1960745080

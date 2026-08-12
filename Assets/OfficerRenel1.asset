@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893a16f71a04c547a5b13e272c5d853, type: 3}
+  m_Name: OfficerRenel1
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueId: linear_dialogue
+  nodes:
+  - nodeId: start
+    speaker: OfficerRenel
+    line: Welcome to the Interogation room detective! Here is where you will ask
+      the criminal questions and after collecting evidence, accuse them of the scam
+      they commited.
+    endConversation: 0
+    choices: []
+    nextNodeId: line_2
+  - nodeId: line_2
+    speaker: OfficerRenel
+    line: First, Press T to open up your Tablet. This will show you the many types
+      of scams as well as the evidence they leave behind.
+    endConversation: 0
+    choices: []
+    nextNodeId: line_3
+  - nodeId: line_3
+    speaker: OfficerRenel
+    line: When the criminal comes in the room, talk to them and ask them some questions.
+    endConversation: 0
+    choices: []
+    nextNodeId: line_4
+  - nodeId: line_4
+    speaker: OfficerRenel
+    line: When ever your ready to collect evidence, talk to Dr.Strange to go back
+      to the office.
+    endConversation: 0
+    choices: []
+    nextNodeId: decision
+  - nodeId: decision
+    speaker: OfficerRenel
+    line: Are you ready to interogate the criminal?
+    endConversation: 0
+    choices:
+    - text: Yes
+      nextNodeId: 
+      action:
+        actionType: 0
+        stringValue: 
+    - text: No
+      nextNodeId: 
+      action:
+        actionType: 0
+        stringValue: 
+    nextNodeId: 

@@ -28,6 +28,9 @@ namespace StarterAssets
 		[Tooltip("Right limit from the starting yaw")]
 		public float RightClamp = 90.0f;
 
+		[Header("Dialogue")]
+		[SerializeField] private DialogueManager dialogueManager;
+
 		private StarterAssetsInputs _input;
 		private PlayerInput _playerInput;
 
@@ -47,6 +50,9 @@ namespace StarterAssets
 		{
 			_input = GetComponent<StarterAssetsInputs>();
 			_playerInput = GetComponent<PlayerInput>();
+
+			if (dialogueManager == null)
+				dialogueManager = FindFirstObjectByType<DialogueManager>();
 
 			if (PitchCamera == null)
 				PitchCamera = GetComponentInChildren<Camera>();
@@ -76,6 +82,12 @@ namespace StarterAssets
 
 		private void CameraRotation()
 		{
+			if (dialogueManager != null && dialogueManager.IsDialogueActive)
+			{
+				_input.look = Vector2.zero;
+				return;
+			}
+
 			bool lookEnabled = _input.cursorInputForLook;
 			if (lookEnabled && !_wasLookEnabled)
 				_skipLookFrames = 2;

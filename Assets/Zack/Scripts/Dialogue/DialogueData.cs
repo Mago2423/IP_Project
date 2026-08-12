@@ -41,7 +41,8 @@ public enum DialogueActionType
 {
     None,
     LoadScene,
-    RunTeleporterOnSource
+    RunTeleporterOnSource,
+    StartInterrogationOnSource
 }
 
 public readonly struct DialogueActionContext
@@ -89,6 +90,19 @@ public class DialogueAction
                 }
 
                 teleporter.Interact();
+                return;
+            case DialogueActionType.StartInterrogationOnSource:
+                if (context.SourceInteractor == null)
+                {
+                    return;
+                }
+
+                if (!context.SourceInteractor.TryGetComponent(out OfficerRInterrogation interrogationSequence))
+                {
+                    return;
+                }
+
+                interrogationSequence.BeginSequence();
                 return;
             default:
                 return;
