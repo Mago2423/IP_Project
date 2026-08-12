@@ -17,4 +17,6 @@ MonoBehaviour:
   speaker: NPC
   openingLine: What do you want?
   doneChoiceText: I am done questioning.
-  entries: []
+  entries:
+  - question: 
+    answer: 
