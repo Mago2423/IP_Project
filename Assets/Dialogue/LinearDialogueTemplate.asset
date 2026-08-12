@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: LinearDialogueTemplate
   m_EditorClassIdentifier: Assembly-CSharp::LinearDialogueTemplate
   dialogueId: linear_dialogue
-  speaker: Virtual World
-  lines: []
-  includeFinalDecision: 1
+  speaker: Go big and no home Man
+  lines:
+  - It was 300 percent in profits if I had gotten that deal!
+  - "I deposited that money through the form, selling my house thinking i\u2019ll
+    make big money. Now what?"
+  - "Where;s my Cash Prize That Chameleon Promised Me !?!ing my house thinking i\u2019ll
+    make big money. Now what?"
+  - "My Money\u2026 MY HOuse\u2026"
+  includeFinalDecision: 0
   decisionLine: Would You like to go to the Virtual World?
   confirmText: Yes
   denyText: No
