@@ -42,7 +42,13 @@ public enum DialogueActionType
     None,
     LoadScene,
     RunTeleporterOnSource,
-    StartInterrogationOnSource
+    StartInterrogationOnSource,
+    CollectEvidenceOnSource,
+    SelectScamOnSource,
+    AttemptAccusationOnSource,
+    StartGame,
+    ReturnToMainMenu,
+    QuitGame
 }
 
 public readonly struct DialogueActionContext
@@ -103,6 +109,66 @@ public class DialogueAction
                 }
 
                 interrogationSequence.BeginSequence();
+                return;
+            case DialogueActionType.CollectEvidenceOnSource:
+                if (context.SourceInteractor == null)
+                {
+                    return;
+                }
+
+                if (!context.SourceInteractor.TryGetComponent(out CaseFlowInteractable caseFlowInteractable))
+                {
+                    return;
+                }
+
+                caseFlowInteractable.Interact();
+                return;
+            case DialogueActionType.SelectScamOnSource:
+                if (context.SourceInteractor == null)
+                {
+                    return;
+                }
+
+                if (!context.SourceInteractor.TryGetComponent(out CaseFlowInteractable scanInteractable))
+                {
+                    return;
+                }
+
+                scanInteractable.Interact();
+                return;
+            case DialogueActionType.AttemptAccusationOnSource:
+                if (context.SourceInteractor == null)
+                {
+                    return;
+                }
+
+                if (!context.SourceInteractor.TryGetComponent(out CaseFlowInteractable accusationInteractable))
+                {
+                    return;
+                }
+
+                accusationInteractable.Interact();
+                return;
+            case DialogueActionType.StartGame:
+                if (GameFlowManager.Instance != null)
+                {
+                    GameFlowManager.Instance.StartNewGame();
+                }
+
+                return;
+            case DialogueActionType.ReturnToMainMenu:
+                if (GameFlowManager.Instance != null)
+                {
+                    GameFlowManager.Instance.ReturnToMainMenu();
+                }
+
+                return;
+            case DialogueActionType.QuitGame:
+                if (GameFlowManager.Instance != null)
+                {
+                    GameFlowManager.Instance.QuitGame();
+                }
+
                 return;
             default:
                 return;

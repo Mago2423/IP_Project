@@ -10,6 +10,7 @@ public class TabletUI : MonoBehaviour
     public GameObject jobPanel;
     public GameObject investmentPanel;
     public GameObject donationPanel;
+    public GameObject accusePanel;
     public GameObject tablet;
 
     private void Start()
@@ -45,6 +46,51 @@ public class TabletUI : MonoBehaviour
     public void ShowDonationPanel()
     {
         ShowOnly(donationPanel);
+    }
+
+    public void ShowAccusePanel()
+    {
+        ShowOnly(accusePanel);
+    }
+
+    public void AttemptAccusation()
+    {
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.AttemptAccusation();
+        }
+    }
+
+    public void ShowCurrentScamPanel()
+    {
+        if (GameFlowManager.Instance == null)
+        {
+            ShowPhishingPanel();
+            return;
+        }
+
+        switch (GameFlowManager.Instance.SelectedScam)
+        {
+            case GameFlowManager.ScamType.Lottery:
+                ShowLotteryPanel();
+                return;
+            case GameFlowManager.ScamType.Romance:
+                ShowRomancePanel();
+                return;
+            case GameFlowManager.ScamType.Job:
+                ShowJobPanel();
+                return;
+            case GameFlowManager.ScamType.Investment:
+                ShowInvestmentPanel();
+                return;
+            case GameFlowManager.ScamType.Donation:
+                ShowDonationPanel();
+                return;
+            case GameFlowManager.ScamType.Phishing:
+            default:
+                ShowPhishingPanel();
+                return;
+        }
     }
 
     public bool IsOpen => tablet != null && tablet.activeSelf;
