@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893a16f71a04c547a5b13e272c5d853, type: 3}
+  m_Name: OfficerRendellIntro
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueId: officer_rendell_intro
+  nodes:
+  - nodeId: start
+    speaker: Officer Rendell
+    line: Greetings player, My name is Officer Rendell and today we request your
+      detective instinct to identify what scam this criminal has committed.
+    endConversation: 0
+    choices: []
+    nextNodeId: movement
+  - nodeId: movement
+    speaker: Officer Rendell
+    line: You can use WASD to move around the room. Press J to open up your tablet.
+    endConversation: 0
+    choices: []
+    nextNodeId: tablet
+  - nodeId: tablet
+    speaker: Officer Rendell
+    line: "You may scroll through the tablet to look for the different types of scam
+      that\u2019s been more and more common."
+    endConversation: 0
+    choices: []
+    nextNodeId: questions
+  - nodeId: questions
+    speaker: Officer Rendell
+    line: You may ask questions to the criminal and try to see if he could shed light
+      on his wrongdoing.
+    endConversation: 0
+    choices: []
+    nextNodeId: leave_room
+  - nodeId: leave_room
+    speaker: Officer Rendell
+    line: "Once you\u2019ve felt that you\u2019re ready or have no further questions,
+      you may press T to leave the interrogation room."
+    endConversation: 0
+    choices: []
+    nextNodeId: help
+  - nodeId: help
+    speaker: Officer Rendell
+    line: "Now if there\u2019s anything you are unsure of, I would be standing at
+      the corner of the room. You may approach me anytime."
+    endConversation: 1
+    choices: []
+    nextNodeId: 

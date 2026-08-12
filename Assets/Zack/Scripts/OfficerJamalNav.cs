@@ -1,0 +1,238 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+[RequireComponent(typeof(NavMeshAgent))]
+public class OfficerJamalNav : MonoBehaviour, IInteractable
+{
+    private enum OfficerState
+    {
+        Patrolling,
+        Speaking,
+        MovingToDoor,
+        WaitingAtDoor
+    }
+
+    [Header("Movement")]
+    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private List<Transform> patrolPoints = new();
+    [SerializeField] private Transform interrogationDoorPoint;
+    [SerializeField] private float patrolStopDistance = 0.75f;
+    [SerializeField] private float doorStopDistance = 1.2f;
+    [SerializeField] private float patrolPointPauseDuration = 1.5f;
+
+    [Header("Interaction")]
+    [SerializeField] private DialogueTrigger dialogueTrigger;
+
+    [SerializeField] private OfficerState currentState = OfficerState.Patrolling;
+    [SerializeField] private int patrolIndex = -1;
+    [SerializeField] private bool hasStartedSequence;
+
+    private bool _isWaitingAtPatrolPoint;
+    private float _patrolPauseTimer;
+    private Coroutine _dialogueSequenceCoroutine;
+
+    private void Reset()
+    {
+        agent = GetComponent<NavMeshAgent>();
+    }
+
+    private void Awake()
+    {
+        if (agent == null)
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
+
+        if (agent != null)
+        {
+            agent.stoppingDistance = patrolStopDistance;
+        }
+    }
+
+    private void Start()
+    {
+        if (agent != null)
+        {
+            agent.updateRotation = true;
+            agent.updateUpAxis = true;
+        }
+
+        if (patrolPoints.Count > 0)
+        {
+            MoveToNextPatrolPoint();
+        }
+        else
+        {
+            StopAgentImmediately();
+        }
+    }
+
+    private void Update()
+    {
+        if (agent == null || !agent.enabled)
+        {
+            return;
+        }
+
+        if (!hasStartedSequence && dialogueTrigger != null && dialogueTrigger.HasTriggered)
+        {
+            StartDoorSequenceAfterDialogue();
+        }
+
+        if (currentState == OfficerState.Speaking)
+        {
+            StopAgentImmediately();
+            return;
+        }
+
+        switch (currentState)
+        {
+            case OfficerState.Patrolling:
+                HandlePatrolling();
+                break;
+
+            case OfficerState.MovingToDoor:
+                HandleMovingToDoor();
+                break;
+        }
+    }
+
+    public void Interact()
+    {
+        if (hasStartedSequence || currentState == OfficerState.Speaking || currentState == OfficerState.MovingToDoor || currentState == OfficerState.WaitingAtDoor)
+        {
+            return;
+        }
+
+        StartDoorSequenceAfterDialogue();
+
+        if (dialogueTrigger != null)
+        {
+            dialogueTrigger.Interact();
+        }
+    }
+
+    private void StartDoorSequenceAfterDialogue()
+    {
+        if (hasStartedSequence)
+        {
+            return;
+        }
+
+        hasStartedSequence = true;
+        _isWaitingAtPatrolPoint = false;
+        _patrolPauseTimer = 0f;
+        currentState = OfficerState.Speaking;
+        StopAgentImmediately();
+
+        if (_dialogueSequenceCoroutine != null)
+        {
+            StopCoroutine(_dialogueSequenceCoroutine);
+        }
+
+        _dialogueSequenceCoroutine = StartCoroutine(WaitForDialogueThenMoveToDoor());
+    }
+
+    private IEnumerator WaitForDialogueThenMoveToDoor()
+    {
+        DialogueManager dialogueManager = FindFirstObjectByType<DialogueManager>();
+
+        while (dialogueManager != null && dialogueManager.IsDialogueActive)
+        {
+            yield return null;
+        }
+
+        _dialogueSequenceCoroutine = null;
+        MoveToInterrogationDoor();
+    }
+
+    private void HandlePatrolling()
+    {
+        if (patrolPoints.Count == 0)
+        {
+            StopAgentImmediately();
+            return;
+        }
+
+        if (!agent.pathPending && agent.remainingDistance <= Mathf.Max(agent.stoppingDistance, patrolStopDistance))
+        {
+            if (!_isWaitingAtPatrolPoint)
+            {
+                _isWaitingAtPatrolPoint = true;
+                _patrolPauseTimer = patrolPointPauseDuration;
+                agent.isStopped = true;
+                return;
+            }
+
+            _patrolPauseTimer -= Time.deltaTime;
+            if (_patrolPauseTimer <= 0f)
+            {
+                _isWaitingAtPatrolPoint = false;
+                MoveToNextPatrolPoint();
+            }
+        }
+    }
+
+    private void HandleMovingToDoor()
+    {
+        if (!agent.pathPending && agent.remainingDistance <= Mathf.Max(agent.stoppingDistance, doorStopDistance))
+        {
+            StopAgentImmediately();
+            currentState = OfficerState.WaitingAtDoor;
+        }
+    }
+
+    private void MoveToNextPatrolPoint()
+    {
+        if (patrolPoints.Count == 0)
+        {
+            return;
+        }
+
+        patrolIndex = (patrolIndex + 1) % patrolPoints.Count;
+        Transform targetPoint = patrolPoints[patrolIndex];
+
+        if (targetPoint != null)
+        {
+            agent.stoppingDistance = patrolStopDistance;
+            agent.SetDestination(targetPoint.position);
+            agent.isStopped = false;
+        }
+    }
+
+    private void MoveToInterrogationDoor()
+    {
+        if (agent == null)
+        {
+            return;
+        }
+
+        currentState = OfficerState.MovingToDoor;
+
+        if (interrogationDoorPoint != null)
+        {
+            agent.stoppingDistance = doorStopDistance;
+            agent.SetDestination(interrogationDoorPoint.position);
+            agent.isStopped = false;
+        }
+        else
+        {
+            agent.isStopped = true;
+            currentState = OfficerState.WaitingAtDoor;
+        }
+    }
+
+    private void StopAgentImmediately()
+    {
+        agent.isStopped = true;
+
+        if (agent.hasPath)
+        {
+            agent.ResetPath();
+        }
+
+        agent.velocity = Vector3.zero;
+    }
+}
