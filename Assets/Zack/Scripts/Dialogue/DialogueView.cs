@@ -2,7 +2,11 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+#if ENABLE_INPUT_SYSTEM
+using UnityEngine.InputSystem.UI;
+#endif
 
 public class DialogueView : MonoBehaviour
 {
@@ -30,68 +34,24 @@ public class DialogueView : MonoBehaviour
 
     private void Awake()
     {
-        ValidateReferences();
+        EnsureEventSystem();
         Hide();
     }
 
-    private void ValidateReferences()
+    private void EnsureEventSystem()
     {
-        if (rootPanel == null)
+        if (EventSystem.current != null)
         {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} is missing Root Panel.", this);
+            return;
         }
 
-        if (speakerText == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} is missing Speaker Text.", this);
-        }
-
-        if (lineText == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} is missing Line Text.", this);
-        }
-
-        if (nextPrompt == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} is missing Next Prompt.", this);
-        }
-
-        if (confirmPrompt == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} is missing Confirm Prompt.", this);
-        }
-
-        if (cancelPrompt == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} is missing Cancel Prompt.", this);
-        }
-
-        if (linearModePanel == null || choiceModePanel == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} can use optional Linear/Choice mode panels for cleaner two-layout switching.", this);
-        }
-
-        if (premadeChoiceButtons == null || premadeChoiceButtons.Count == 0)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} needs Premade Choice Buttons assigned for branching dialogue.", this);
-        }
-        else
-        {
-            for (int i = 0; i < premadeChoiceButtons.Count; i++)
-            {
-                Button button = premadeChoiceButtons[i];
-                if (button == null)
-                {
-                    Debug.LogWarning($"{nameof(DialogueView)} on {name} has a null entry in Premade Choice Buttons at index {i}.", this);
-                    continue;
-                }
-
-                if (button.GetComponentInChildren<TMP_Text>() == null)
-                {
-                    Debug.LogWarning($"Premade choice button '{button.name}' on {name} is missing TMP_Text.", button);
-                }
-            }
-        }
+        GameObject eventSystemObject = new GameObject("EventSystem");
+        eventSystemObject.AddComponent<EventSystem>();
+#if ENABLE_INPUT_SYSTEM
+        eventSystemObject.AddComponent<InputSystemUIInputModule>();
+#else
+        eventSystemObject.AddComponent<StandaloneInputModule>();
+#endif
     }
 
     public void ShowNode(DialogueNode node, Action onAdvance, Action<int> onChoiceSelected)
@@ -180,7 +140,6 @@ public class DialogueView : MonoBehaviour
         {
             return;
         }
-        Debug.LogWarning($"{nameof(DialogueView)} on {name} could not show choices because no premade buttons are configured.", this);
     }
 
     private void UpdatePromptVisibility(DialogueNode node)
@@ -207,7 +166,6 @@ public class DialogueView : MonoBehaviour
     {
         if (confirmPrompt == null || cancelPrompt == null)
         {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} needs both Confirm Prompt and Cancel Prompt for 2-option dialogue nodes.", this);
             return;
         }
 
@@ -225,7 +183,6 @@ public class DialogueView : MonoBehaviour
         Button button = GetPromptButton(prompt);
         if (button == null)
         {
-            Debug.LogWarning($"Prompt '{prompt.name}' on {name} is missing a Button component.", prompt);
             return;
         }
 
@@ -292,11 +249,6 @@ public class DialogueView : MonoBehaviour
 
         bool useNumericPrefix = node.Choices.Count > 2;
 
-        if (node.Choices.Count > premadeChoiceButtons.Count)
-        {
-            Debug.LogWarning($"{nameof(DialogueView)} on {name} has {premadeChoiceButtons.Count} premade buttons but node '{node.NodeId}' needs {node.Choices.Count} choices.", this);
-        }
-
         for (int i = 0; i < premadeChoiceButtons.Count; i++)
         {
             Button button = premadeChoiceButtons[i];
@@ -329,10 +281,6 @@ public class DialogueView : MonoBehaviour
                 tmpButtonText.fontSizeMax = 24f;
                 tmpButtonText.textWrappingMode = TextWrappingModes.NoWrap;
                 tmpButtonText.overflowMode = TextOverflowModes.Ellipsis;
-            }
-            else
-            {
-                Debug.LogWarning($"Premade choice button '{button.name}' on {name} is missing TMP_Text.", button);
             }
 
             button.onClick.AddListener(() => _onChoiceSelected?.Invoke(capturedIndex));

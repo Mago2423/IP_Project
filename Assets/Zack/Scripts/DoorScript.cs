@@ -57,7 +57,6 @@ public class DoorScript : MonoBehaviour
 	{
 		if (doorAnimator == null)
 		{
-			Debug.LogWarning("DoorScript: Missing Animator reference.", this);
 			return;
 		}
 

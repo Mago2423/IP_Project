@@ -6,21 +6,28 @@ using UnityEngine.AI;
 public class RoamingNpc : MonoBehaviour, IInteractable
 {
     [Header("Movement")]
-    [SerializeField] private NavMeshAgent agent;
+    [SerializeField, HideInInspector] private NavMeshAgent agent;
     [SerializeField] private List<Transform> roamPoints = new();
     [SerializeField] private float stopDistance = 0.75f;
     [SerializeField] private float pauseDuration = 1.5f;
+
+    [Header("Random Roaming")]
     [SerializeField] private bool useRandomRoaming = true;
+    [SerializeField] private Transform randomRoamCenter;
     [SerializeField] private float randomRoamRadius = 4f;
-    [SerializeField] private float randomRoamSampleRange = 6f;
+    [SerializeField, HideInInspector] private float randomRoamSampleRange = 6f;
+    [SerializeField, HideInInspector] private float playerAvoidRadius = 1.25f;
+    [SerializeField, HideInInspector] private int randomRoamSampleAttempts = 8;
 
     [Header("Interaction")]
-    [SerializeField] private DialogueInteractable dialogueInteractable;
+    [SerializeField, HideInInspector] private DialogueInteractable dialogueInteractable;
 
     private int _currentPointIndex = -1;
     private bool _isWaitingAtPoint;
     private float _waitTimer;
     private bool _isSpeaking;
+    private Transform _playerTransform;
+    private DialogueManager _dialogueManager;
 
     private void Reset()
     {
@@ -32,6 +39,25 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         if (agent == null)
         {
             agent = GetComponent<NavMeshAgent>();
+        }
+
+        if (dialogueInteractable == null)
+        {
+            dialogueInteractable = GetComponent<DialogueInteractable>();
+        }
+
+        if (_playerTransform == null)
+        {
+            Player player = FindFirstObjectByType<Player>();
+            if (player != null)
+            {
+                _playerTransform = player.transform;
+            }
+        }
+
+        if (_dialogueManager == null)
+        {
+            _dialogueManager = FindFirstObjectByType<DialogueManager>();
         }
 
         if (agent != null)
@@ -51,10 +77,25 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         GoToNextRoamTarget();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (agent == null || !agent.enabled || _isSpeaking)
+        if (agent == null || !agent.enabled)
         {
+            return;
+        }
+
+        if (_isSpeaking)
+        {
+            if (_dialogueManager == null)
+            {
+                _dialogueManager = FindFirstObjectByType<DialogueManager>();
+            }
+
+            if (_dialogueManager == null || !_dialogueManager.IsDialogueActive)
+            {
+                ResumeRoamingAfterDialogue();
+            }
+
             return;
         }
 
@@ -74,7 +115,7 @@ public class RoamingNpc : MonoBehaviour, IInteractable
             {
                 _isWaitingAtPoint = true;
                 _waitTimer = pauseDuration;
-                agent.isStopped = true;
+                StopAgentMovement(resetPath: true);
                 return;
             }
 
@@ -89,35 +130,48 @@ public class RoamingNpc : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        BeginDialogueInteraction();
+
+        if (dialogueInteractable != null)
+        {
+            dialogueInteractable.Interact();
+        }
+    }
+
+    public void BeginDialogueInteraction()
+    {
         if (_isSpeaking)
         {
             return;
         }
 
         _isSpeaking = true;
-        StopAgentImmediately();
+        StopAgentMovement(resetPath: true);
+    }
 
-        if (dialogueInteractable != null)
-        {
-            dialogueInteractable.Interact();
-        }
-        else
-        {
-            Debug.LogWarning($"{nameof(RoamingNpc)} on {name} is missing a DialogueInteractable reference.", this);
-        }
+    private void ResumeRoamingAfterDialogue()
+    {
+        _isSpeaking = false;
+        _isWaitingAtPoint = false;
+        _waitTimer = 0f;
+
+        GoToNextRoamTarget();
     }
 
     private void GoToNextRoamTarget()
     {
         if (roamPoints.Count > 0)
         {
-            _currentPointIndex = (_currentPointIndex + 1) % roamPoints.Count;
-            Transform target = roamPoints[_currentPointIndex];
-            if (target != null)
+            for (int i = 0; i < roamPoints.Count; i++)
             {
-                agent.stoppingDistance = stopDistance;
-                agent.SetDestination(target.position);
-                agent.isStopped = false;
+                _currentPointIndex = (_currentPointIndex + 1) % roamPoints.Count;
+                Transform target = roamPoints[_currentPointIndex];
+                if (target == null || IsTargetBlocked(target.position))
+                {
+                    continue;
+                }
+
+                SetAgentDestination(target.position, stopDistance);
                 return;
             }
         }
@@ -135,19 +189,52 @@ public class RoamingNpc : MonoBehaviour, IInteractable
             return;
         }
 
-        Vector3 randomOffset = Random.insideUnitSphere * randomRoamRadius;
-        randomOffset.y = 0f;
-        Vector3 desiredPoint = transform.position + randomOffset;
+        Vector3 roamCenter = randomRoamCenter != null ? randomRoamCenter.position : transform.position;
 
-        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit navHit, randomRoamSampleRange, NavMesh.AllAreas))
+        for (int attempt = 0; attempt < randomRoamSampleAttempts; attempt++)
         {
-            agent.stoppingDistance = stopDistance;
-            agent.isStopped = false;
-            agent.SetDestination(navHit.position);
+            Vector3 randomOffset = Random.insideUnitSphere * randomRoamRadius;
+            randomOffset.y = 0f;
+            Vector3 desiredPoint = roamCenter + randomOffset;
+
+            if (!NavMesh.SamplePosition(desiredPoint, out NavMeshHit navHit, randomRoamSampleRange, NavMesh.AllAreas))
+            {
+                continue;
+            }
+
+            if (IsTargetBlocked(navHit.position))
+            {
+                continue;
+            }
+
+            SetAgentDestination(navHit.position, stopDistance);
+            return;
         }
     }
 
-    private void StopAgentImmediately()
+    private bool IsTargetBlocked(Vector3 targetPosition)
+    {
+        if (_playerTransform == null)
+        {
+            return false;
+        }
+
+        return Vector3.SqrMagnitude(targetPosition - _playerTransform.position) <= playerAvoidRadius * playerAvoidRadius;
+    }
+
+    private void SetAgentDestination(Vector3 destination, float stoppingDistance)
+    {
+        if (agent == null)
+        {
+            return;
+        }
+
+        agent.stoppingDistance = stoppingDistance;
+        agent.isStopped = false;
+        agent.SetDestination(destination);
+    }
+
+    private void StopAgentMovement(bool resetPath)
     {
         if (agent == null)
         {
@@ -155,7 +242,7 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
 
         agent.isStopped = true;
-        if (agent.hasPath)
+        if (resetPath && agent.hasPath)
         {
             agent.ResetPath();
         }

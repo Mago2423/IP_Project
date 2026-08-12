@@ -72,7 +72,6 @@ public class DialogueAction
             case DialogueActionType.LoadScene:
                 if (string.IsNullOrWhiteSpace(stringValue))
                 {
-                    Debug.LogWarning("Dialogue action LoadScene is missing a target scene name.");
                     return;
                 }
 
@@ -81,20 +80,17 @@ public class DialogueAction
             case DialogueActionType.RunTeleporterOnSource:
                 if (context.SourceInteractor == null)
                 {
-                    Debug.LogWarning("Dialogue action RunTeleporterOnSource has no interaction source.");
                     return;
                 }
 
                 if (!context.SourceInteractor.TryGetComponent(out TeleporterScript teleporter))
                 {
-                    Debug.LogWarning($"Dialogue action RunTeleporterOnSource expected {nameof(TeleporterScript)} on '{context.SourceInteractor.name}'.");
                     return;
                 }
 
                 teleporter.Interact();
                 return;
             default:
-                Debug.LogWarning($"Unsupported dialogue action type: {actionType}");
                 return;
         }
     }

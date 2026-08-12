@@ -8,6 +8,10 @@ public class Player : MonoBehaviour
 {
     public TabletUI tabletUI;
 
+    [Header("Interaction Prompt")]
+    [SerializeField] private GameObject interactPromptUI;
+    [SerializeField] private string interactableTag = "Interactable";
+
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float raycastDistance = 10f;
     [SerializeField] private DialogueManager dialogueManager;
@@ -22,19 +26,9 @@ public class Player : MonoBehaviour
     {
         _inputs = GetComponent<StarterAssetsInputs>();
 
-        if (_inputs == null)
-        {
-            Debug.LogWarning($"{nameof(Player)} on {name} is missing {nameof(StarterAssetsInputs)} component.", this);
-        }
-
         if (dialogueManager == null)
         {
             dialogueManager = FindFirstObjectByType<DialogueManager>();
-        }
-
-        if (dialogueManager == null)
-        {
-            Debug.LogWarning($"{nameof(Player)} on {name} could not find a {nameof(DialogueManager)} in scene.", this);
         }
 
         if (playerCamera == null)
@@ -42,10 +36,7 @@ public class Player : MonoBehaviour
             playerCamera = GetComponentInChildren<Camera>();
         }
 
-        if (playerCamera == null)
-        {
-            Debug.LogWarning($"{nameof(Player)} on {name} is missing Player Camera reference.", this);
-        }
+        SetInteractPromptVisible(false);
     }
 
     private void Update()
@@ -56,6 +47,7 @@ public class Player : MonoBehaviour
         }
 
         UpdateRaycast();
+        UpdateInteractPrompt();
     }
 
     public CriminalDialogueSwap jamalSwap;
@@ -87,6 +79,58 @@ public class Player : MonoBehaviour
         CurrentHit = hit;
     }
 
+    private void UpdateInteractPrompt()
+    {
+        if (interactPromptUI == null)
+        {
+            return;
+        }
+
+        bool shouldShowPrompt = false;
+        if (!_isDialogueMode && IsHitting)
+        {
+            shouldShowPrompt = HasTagInHierarchy(CurrentHit.collider != null ? CurrentHit.collider.transform : null, interactableTag);
+        }
+
+        SetInteractPromptVisible(shouldShowPrompt);
+    }
+
+    private bool HasTagInHierarchy(Transform target, string requiredTag)
+    {
+        if (target == null || string.IsNullOrWhiteSpace(requiredTag))
+        {
+            return false;
+        }
+
+        Transform current = target;
+        while (current != null)
+        {
+            if (string.Equals(current.tag, requiredTag, System.StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            current = current.parent;
+        }
+
+        return false;
+    }
+
+    private void SetInteractPromptVisible(bool isVisible)
+    {
+        if (interactPromptUI == null)
+        {
+            return;
+        }
+
+        if (interactPromptUI.activeSelf == isVisible)
+        {
+            return;
+        }
+
+        interactPromptUI.SetActive(isVisible);
+    }
+
     // called by PlayerInput via SendMessages when CamaraLock action fires
     void OnCamaraLock()
     {
@@ -109,13 +153,49 @@ public class Player : MonoBehaviour
 
         if (!IsHitting) return;
 
-        if (CurrentHit.collider.TryGetComponent(out IInteractable interactable))
+        if (TryGetInteractable(CurrentHit.collider, out IInteractable interactable))
         {
             interactable.Interact();
             return;
         }
     }
-        void OnJournal()
+
+    private static bool TryGetInteractable(Collider hitCollider, out IInteractable interactable)
+    {
+        interactable = null;
+
+        if (hitCollider == null)
+        {
+            return false;
+        }
+
+        Transform current = hitCollider.transform;
+        while (current != null)
+        {
+            // Prefer dialogue when multiple interactables exist on the same object.
+            if (current.TryGetComponent(out DialogueInteractable dialogueInteractable))
+            {
+                interactable = dialogueInteractable;
+                return true;
+            }
+
+            MonoBehaviour[] behaviours = current.GetComponents<MonoBehaviour>();
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                if (behaviours[i] is IInteractable foundInteractable)
+                {
+                    interactable = foundInteractable;
+                    return true;
+                }
+            }
+
+            current = current.parent;
+        }
+
+        return false;
+    }
+
+    void OnJournal()
     {
         if (tabletUI != null)
         {

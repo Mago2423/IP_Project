@@ -26,9 +26,10 @@ public class TeleporterScript : MonoBehaviour, IInteractable
 
     private System.Collections.IEnumerator TeleportWithLoadingScreen()
     {
+        isTeleporting = true;
+
         if (string.IsNullOrWhiteSpace(targetSceneName))
         {
-            Debug.LogError($"{nameof(TeleporterScript)} on {name} has no target scene assigned.");
             yield break;
         }
 
@@ -48,7 +49,6 @@ public class TeleporterScript : MonoBehaviour, IInteractable
 
         if (asyncLoad == null)
         {
-            Debug.LogError($"Failed to begin loading scene '{targetSceneName}'.");
             isTeleporting = false;
             yield break;
         }

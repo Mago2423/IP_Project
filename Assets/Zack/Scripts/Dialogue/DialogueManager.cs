@@ -16,16 +16,6 @@ public class DialogueManager : MonoBehaviour
 
     private void Awake()
     {
-        if (dialogueView == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueManager)} on {name} is missing DialogueView reference.", this);
-        }
-
-        if (player == null)
-        {
-            Debug.LogWarning($"{nameof(DialogueManager)} on {name} is missing Player reference. Dialogue mode lock/unlock will not run.", this);
-        }
-
         if (dialogueView != null)
         {
             dialogueView.Hide();
@@ -36,7 +26,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogueData == null)
         {
-            Debug.LogWarning("DialogueManager received null dialogue data.");
             return;
         }
 
@@ -46,7 +35,6 @@ public class DialogueManager : MonoBehaviour
 
         if (_currentNode == null)
         {
-            Debug.LogWarning($"Dialogue '{_activeDialogue.DialogueId}' has no valid start node.");
             EndDialogue();
             return;
         }
@@ -95,7 +83,6 @@ public class DialogueManager : MonoBehaviour
 
         if (choiceIndex < 0 || choiceIndex >= _currentNode.Choices.Count)
         {
-            Debug.LogWarning($"Invalid dialogue choice index: {choiceIndex}");
             return;
         }
 
@@ -133,7 +120,6 @@ public class DialogueManager : MonoBehaviour
         DialogueNode nextNode = _activeDialogue.GetNode(nodeId);
         if (nextNode == null)
         {
-            Debug.LogWarning($"Dialogue node '{nodeId}' was not found.");
             EndDialogue();
             return;
         }
@@ -146,7 +132,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogueView == null)
         {
-            Debug.LogError("DialogueView reference is missing on DialogueManager.");
             EndDialogue();
             return;
         }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DialogueInteractable : MonoBehaviour, IInteractable
 {
@@ -10,6 +11,13 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 
     public bool HasTriggered => _hasTriggered;
 
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Interact();
+        }
+    }
     public void Interact()
     {
         if (oneShot && _hasTriggered)
@@ -17,17 +25,17 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
             return;
         }
 
+        StopMovementForDialogue();
+
         DialogueData resolvedDialogue = ResolveDialogueData();
         if (resolvedDialogue == null)
         {
-            Debug.LogWarning($"{nameof(DialogueInteractable)} on {name} is missing Dialogue Data.", this);
             return;
         }
 
         DialogueManager manager = FindFirstObjectByType<DialogueManager>();
         if (manager == null)
         {
-            Debug.LogWarning("No DialogueManager found in scene.");
             return;
         }
 
@@ -44,5 +52,29 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         }
 
         return dialogueData;
+    }
+
+    private void StopMovementForDialogue()
+    {
+        RoamingNpc roamingNpc = GetComponentInParent<RoamingNpc>();
+        if (roamingNpc != null)
+        {
+            roamingNpc.BeginDialogueInteraction();
+            return;
+        }
+
+        NavMeshAgent navMeshAgent = GetComponentInParent<NavMeshAgent>();
+        if (navMeshAgent == null)
+        {
+            return;
+        }
+
+        navMeshAgent.isStopped = true;
+        if (navMeshAgent.hasPath)
+        {
+            navMeshAgent.ResetPath();
+        }
+
+        navMeshAgent.velocity = Vector3.zero;
     }
 }

@@ -17,9 +17,6 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
     [Header("Movement")]
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private List<Transform> patrolPoints = new();
-    [SerializeField] private bool useRandomPatrolIfNoPoints = true;
-    [SerializeField] private float randomPatrolRadius = 4f;
-    [SerializeField] private float randomPatrolSampleRange = 6f;
     [SerializeField] private Transform interrogationDoorPoint;
     [SerializeField] private float patrolStopDistance = 0.75f;
     [SerializeField] private float doorStopDistance = 1.2f;
@@ -34,6 +31,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
 
     private bool _isWaitingAtPatrolPoint;
     private float _patrolPauseTimer;
+    private Coroutine _dialogueSequenceCoroutine;
 
     private void Reset()
     {
@@ -65,9 +63,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         {
             MoveToNextPatrolPoint();
         }
-        else if (useRandomPatrolIfNoPoints)
+        else
         {
-            TrySetRandomPatrolDestination();
+            StopAgentImmediately();
         }
     }
 
@@ -76,6 +74,11 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         if (agent == null || !agent.enabled)
         {
             return;
+        }
+
+        if (!hasStartedSequence && dialogueTrigger != null && dialogueTrigger.HasTriggered)
+        {
+            StartDoorSequenceAfterDialogue();
         }
 
         if (currentState == OfficerState.Speaking)
@@ -103,22 +106,33 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
             return;
         }
 
+        StartDoorSequenceAfterDialogue();
+
+        if (dialogueTrigger != null)
+        {
+            dialogueTrigger.Interact();
+        }
+    }
+
+    private void StartDoorSequenceAfterDialogue()
+    {
+        if (hasStartedSequence)
+        {
+            return;
+        }
+
         hasStartedSequence = true;
         _isWaitingAtPatrolPoint = false;
         _patrolPauseTimer = 0f;
         currentState = OfficerState.Speaking;
         StopAgentImmediately();
 
-        if (dialogueTrigger != null)
+        if (_dialogueSequenceCoroutine != null)
         {
-            dialogueTrigger.Interact();
-        }
-        else
-        {
-            Debug.LogWarning($"{nameof(OfficerJamalNav)} on {name} is missing a DialogueTrigger reference.", this);
+            StopCoroutine(_dialogueSequenceCoroutine);
         }
 
-        StartCoroutine(WaitForDialogueThenMoveToDoor());
+        _dialogueSequenceCoroutine = StartCoroutine(WaitForDialogueThenMoveToDoor());
     }
 
     private IEnumerator WaitForDialogueThenMoveToDoor()
@@ -130,6 +144,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
             yield return null;
         }
 
+        _dialogueSequenceCoroutine = null;
         MoveToInterrogationDoor();
     }
 
@@ -137,11 +152,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
     {
         if (patrolPoints.Count == 0)
         {
-            if (useRandomPatrolIfNoPoints && !agent.pathPending && (!agent.hasPath || agent.remainingDistance <= Mathf.Max(agent.stoppingDistance, patrolStopDistance)))
-            {
-                TrySetRandomPatrolDestination();
-            }
-
+            StopAgentImmediately();
             return;
         }
 
@@ -210,21 +221,6 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         {
             agent.isStopped = true;
             currentState = OfficerState.WaitingAtDoor;
-            Debug.LogWarning($"{nameof(OfficerJamalNav)} on {name} is missing an interrogation door target.", this);
-        }
-    }
-
-    private void TrySetRandomPatrolDestination()
-    {
-        Vector3 randomOffset = Random.insideUnitSphere * randomPatrolRadius;
-        randomOffset.y = 0f;
-        Vector3 desiredPoint = transform.position + randomOffset;
-
-        if (NavMesh.SamplePosition(desiredPoint, out NavMeshHit navHit, randomPatrolSampleRange, NavMesh.AllAreas))
-        {
-            agent.stoppingDistance = patrolStopDistance;
-            agent.isStopped = false;
-            agent.SetDestination(navHit.position);
         }
     }
 
