@@ -20,7 +20,7 @@ public class Controller : MonoBehaviour
     [SerializeField, HideInInspector] private float cameraTurnSpeed = 90f;
 
     [Header("Camera Occlusion")]
-    [SerializeField, HideInInspector] private bool pullCameraWhenOccluded = true;
+    [SerializeField, HideInInspector] private bool pullCameraWhenOccluded = false;
     [SerializeField, HideInInspector] private LayerMask occlusionLayers = ~0;
     [SerializeField, HideInInspector] private float occlusionSphereRadius = 0.4f;
     [SerializeField, HideInInspector] private float occlusionPadding = 0.2f;
