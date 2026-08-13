@@ -3310,6 +3310,56 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &775709869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 775709871}
+  - component: {fileID: 775709870}
+  m_Layer: 0
+  m_Name: OwlSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &775709870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775709869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6dda118315cc5f45a8d8d8d715c34e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EvidenceReturnOwlSpawner
+  owlPrefab: {fileID: 7462107075999690047, guid: 143a09e6f4ed2524a9b8e721302a7f7a, type: 3}
+  fallbackSpawnPoint: {fileID: 775709871}
+  distanceBehindPlayer: 2.5
+  navMeshSampleDistance: 3
+  owlStopDistance: 2
+  destinationUpdateRate: 0.25
+--- !u!4 &775709871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775709869}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 178.6, y: 20.20002, z: 180.0555}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &787778044
 GameObject:
   m_ObjectHideFlags: 0
@@ -9872,7 +9922,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.006286621, y: 135.2002}
+  m_AnchoredPosition: {x: -0.006225586, y: 135.2002}
   m_SizeDelta: {x: -1445.9, y: -881.1104}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &449537610428154829
@@ -12186,7 +12236,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.013244629, y: 135.2002}
+  m_AnchoredPosition: {x: -0.013305664, y: 135.2002}
   m_SizeDelta: {x: -1445.9, y: -881.1104}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1982069530217154732
@@ -22807,3 +22857,4 @@ SceneRoots:
   - {fileID: 542398545}
   - {fileID: 646551072}
   - {fileID: 9744019}
+  - {fileID: 775709871}
