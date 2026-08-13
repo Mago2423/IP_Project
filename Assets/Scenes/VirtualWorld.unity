@@ -2085,7 +2085,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7740777614073021592}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PauseMenuUI, Assembly-CSharp
         m_MethodName: ShowPausePanel
         m_Mode: 1
@@ -14525,7 +14525,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7740777614073021592}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PauseMenuUI, Assembly-CSharp
         m_MethodName: ShowSettings
         m_Mode: 1
@@ -15688,7 +15688,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7740777614073021592}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PauseMenuUI, Assembly-CSharp
         m_MethodName: RestartCase
         m_Mode: 1
@@ -16171,7 +16171,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7740777614073021592}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PauseMenuUI, Assembly-CSharp
         m_MethodName: ShowHowToPlay
         m_Mode: 1
@@ -18127,7 +18127,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7740777614073021592}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PauseMenuUI, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -18882,6 +18882,7 @@ GameObject:
   - component: {fileID: 291171559228848324}
   - component: {fileID: 5067571939864323848}
   - component: {fileID: 1280346820900100100}
+  - component: {fileID: 6578169071113748625}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -18889,6 +18890,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6578169071113748625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6578169071113748624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 612cbb79b072e0d4089331a898723ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuUI
+  pausePanel: {fileID: 8168489113809267984}
+  howToPlayPanel: {fileID: 6498229492297898682}
+  settingsPanel: {fileID: 5717068876389068414}
+  player: {fileID: 7164385912127203722}
+  flowManager: {fileID: 0}
 --- !u!114 &6579402831010974979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20521,7 +20539,6 @@ GameObject:
   - component: {fileID: 1369699762953224758}
   - component: {fileID: 7164385912127203722}
   - component: {fileID: 4553179565083059250}
-  - component: {fileID: 7740777614073021592}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -20936,23 +20953,6 @@ Transform:
   - {fileID: 7471214239136920175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &7740777614073021592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7560799085488996492}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 612cbb79b072e0d4089331a898723ad7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PauseMenuUI
-  pausePanel: {fileID: 8168489113809267984}
-  howToPlayPanel: {fileID: 6498229492297898682}
-  settingsPanel: {fileID: 5717068876389068414}
-  player: {fileID: 7164385912127203722}
-  flowManager: {fileID: 0}
 --- !u!114 &7761532894688213191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21332,7 +21332,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &8228754821833602324
 GameObject:
   m_ObjectHideFlags: 0
@@ -22163,9 +22163,12 @@ MonoBehaviour:
   investmentPanel: {fileID: 6538282823959813643}
   donationPanel: {fileID: 6415845673974441280}
   accusePanel: {fileID: 0}
+  confirmationPanel: {fileID: 0}
   resultPanel: {fileID: 0}
   resultText: {fileID: 0}
   selectedScamText: {fileID: 0}
+  evidenceText: {fileID: 0}
+  accuseButton: {fileID: 0}
   tablet: {fileID: 164418911766775671}
 --- !u!224 &8565349179089812899
 RectTransform:
@@ -22556,7 +22559,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7740777614073021592}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PauseMenuUI, Assembly-CSharp
         m_MethodName: ReturnToMainMenu
         m_Mode: 1
@@ -22722,7 +22725,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

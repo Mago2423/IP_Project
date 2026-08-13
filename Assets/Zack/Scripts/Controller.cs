@@ -133,7 +133,7 @@ public class Controller : MonoBehaviour
         SetDestination(navMeshHit.position, navMeshHit.normal);
     }
 
-    private void OnInteract()
+    public void Interact()
     {
         if (Time.timeScale <= 0f)
         {

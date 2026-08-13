@@ -75,7 +75,7 @@ public class PauseMenuUI : MonoBehaviour
         Time.timeScale = 1f;
 
         ClosePauseMenu();
-        SetPlayerCameraLocked(true);
+        RestorePlayerCameraState();
     }
 
     public void ShowHowToPlay()
@@ -158,6 +158,14 @@ public class PauseMenuUI : MonoBehaviour
         if (player != null)
         {
             player.SetCameraLock(isLocked);
+        }
+    }
+
+    private void RestorePlayerCameraState()
+    {
+        if (player != null)
+        {
+            player.RestoreDefaultCameraState();
         }
     }
 }

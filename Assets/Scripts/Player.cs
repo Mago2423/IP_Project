@@ -179,6 +179,12 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (topDownController != null)
+        {
+            topDownController.Interact();
+            return;
+        }
+
         if (!IsHitting) return;
 
         if (TryGetInteractable(CurrentHit.collider, out IInteractable interactable))
@@ -250,6 +256,15 @@ public class Player : MonoBehaviour
         SetCameraLock(!tabletUI.IsOpen);
     }
 
+    void OnPause()
+    {
+        PauseMenuUI pauseMenu = FindFirstObjectByType<PauseMenuUI>();
+        if (pauseMenu != null)
+        {
+            pauseMenu.OnPause();
+        }
+    }
+
     // pass true to lock camera (hide cursor), false to unlock (show cursor), or no arg to toggle
     public void SetCameraLock(bool? lockCamera = null)
     {
@@ -268,6 +283,11 @@ public class Player : MonoBehaviour
 
         Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !newState;
+    }
+
+    public void RestoreDefaultCameraState()
+    {
+        SetCameraLock(!IsVirtualWorldScene());
     }
 
     public void SetDialogueMode(bool isActive)
