@@ -36,6 +36,7 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         }
 
         StopMovementForDialogue();
+        FacePlayer();
 
         DialogueData resolvedDialogue = ResolveDialogueData();
         if (resolvedDialogue == null)
@@ -52,6 +53,33 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         manager.StartDialogue(resolvedDialogue, startNodeId, this);
         _hasTriggered = true;
         DialogueStarted?.Invoke();
+    }
+
+    private void FacePlayer()
+    {
+        Player player = FindFirstObjectByType<Player>();
+        if (player == null)
+        {
+            return;
+        }
+
+        Transform npcTransform = transform;
+        NavMeshAgent navMeshAgent = GetComponentInParent<NavMeshAgent>();
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.updateRotation = false;
+            npcTransform = navMeshAgent.transform;
+        }
+
+        Vector3 directionToPlayer = player.transform.position - npcTransform.position;
+        directionToPlayer.y = 0f;
+        if (directionToPlayer.sqrMagnitude <= 0.001f)
+        {
+            return;
+        }
+
+        npcTransform.rotation = Quaternion.LookRotation(directionToPlayer, Vector3.up);
     }
 
     protected virtual DialogueData ResolveDialogueData()
