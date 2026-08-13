@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,8 @@ public class TabletUI : MonoBehaviour
     public GameObject investmentPanel;
     public GameObject donationPanel;
     public GameObject accusePanel;
-    public GameObject tablet;
+    public GameObject resultPanel;
+    public TMP_Text resultText;    public TMP_Text selectedScamText;    public GameObject tablet;
 
     private void Start()
     {
@@ -50,14 +52,55 @@ public class TabletUI : MonoBehaviour
 
     public void ShowAccusePanel()
     {
+        UpdateSelectedScamText();
         ShowOnly(accusePanel);
+    }
+
+    public void UpdateSelectedScamText()
+    {
+        if (selectedScamText == null)
+        {
+            return;
+        }
+
+        if (GameFlowManager.Instance == null)
+        {
+            selectedScamText.text = "Selected scam: None";
+            return;
+        }
+
+        GameFlowManager.ScamType selectedScam = GameFlowManager.Instance.SelectedScam;
+        selectedScamText.text = selectedScam == GameFlowManager.ScamType.None
+            ? "None"
+            : selectedScam.ToString();
     }
 
     public void AttemptAccusation()
     {
         if (GameFlowManager.Instance != null)
         {
-            GameFlowManager.Instance.AttemptAccusation();
+            bool accusationCorrect = GameFlowManager.Instance.AttemptAccusation();
+            ShowResultPanel(accusationCorrect);
+        }
+    }
+
+    public void ShowResultPanel(bool accusationCorrect)
+    {
+        if (resultText != null)
+        {
+            resultText.text = accusationCorrect
+                ? "Correct accusation!"
+                : "Incorrect accusation.";
+        }
+
+        ShowOnly(resultPanel);
+    }
+
+    public void CloseTablet()
+    {
+        if (tablet != null)
+        {
+            tablet.SetActive(false);
         }
     }
 
@@ -107,5 +150,7 @@ public class TabletUI : MonoBehaviour
         if (jobPanel != null) jobPanel.SetActive(panelToShow == jobPanel);
         if (investmentPanel != null) investmentPanel.SetActive(panelToShow == investmentPanel);
         if (donationPanel != null) donationPanel.SetActive(panelToShow == donationPanel);
+        if (accusePanel != null) accusePanel.SetActive(panelToShow == accusePanel);
+        if (resultPanel != null) resultPanel.SetActive(panelToShow == resultPanel);
     }
 }
