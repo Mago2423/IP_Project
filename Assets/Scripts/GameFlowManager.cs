@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,7 +28,7 @@ public class GameFlowManager : MonoBehaviour
 
     [Header("Scenes")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
-    [SerializeField] private string gameplaySceneName = "InterrogationRoom";
+    [SerializeField] private string gameplaySceneName = "TheOffice";
     [SerializeField] private string winSceneName = "";
     [SerializeField] private string loseSceneName = "";
 
@@ -40,6 +41,7 @@ public class GameFlowManager : MonoBehaviour
     private ScamType _selectedScam = ScamType.None;
 
     public static GameFlowManager Instance { get; private set; }
+    public event Action EvidenceChanged;
 
     public int EvidenceCount => _collectedEvidence.Count;
     public int RequiredEvidenceCount => requiredEvidenceCount;
@@ -115,6 +117,8 @@ public class GameFlowManager : MonoBehaviour
         {
             _currentState = CaseState.ReadyToAccuse;
         }
+
+        EvidenceChanged?.Invoke();
 
         return true;
     }

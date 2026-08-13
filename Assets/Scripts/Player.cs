@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private float raycastDistance = 10f;
     [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private FirstPersonController firstPersonController;
+    [SerializeField] private ThirdPersonController thirdPersonController;
+    [SerializeField] private Controller topDownController;
 
     private StarterAssetsInputs _inputs;
     private bool _isDialogueMode;
@@ -34,6 +37,21 @@ public class Player : MonoBehaviour
         if (playerCamera == null)
         {
             playerCamera = GetComponentInChildren<Camera>();
+        }
+
+        if (firstPersonController == null)
+        {
+            firstPersonController = GetComponent<FirstPersonController>();
+        }
+
+        if (thirdPersonController == null)
+        {
+            thirdPersonController = GetComponent<ThirdPersonController>();
+        }
+
+        if (topDownController == null)
+        {
+            topDownController = GetComponent<Controller>();
         }
 
         SetInteractPromptVisible(false);
@@ -58,11 +76,6 @@ public class Player : MonoBehaviour
         if (jamalSwap != null)
         {
             jamalSwap.UseEvidenceDialogue();
-        }
-
-        if (GameFlowManager.Instance != null)
-        {
-            GameFlowManager.Instance.CollectEvidence("jamal_evidence");
         }
     }
 
@@ -156,12 +169,7 @@ public class Player : MonoBehaviour
     {
         if (dialogueManager != null && dialogueManager.IsDialogueActive)
         {
-            if (dialogueManager.CurrentNodeHasChoices)
-            {
-                return;
-            }
-
-            dialogueManager.Advance();
+            // Keep Interact for world interaction only while dialogue is open.
             return;
         }
 
@@ -172,6 +180,22 @@ public class Player : MonoBehaviour
             interactable.Interact();
             return;
         }
+    }
+
+    // called by PlayerInput via SendMessages when Next action fires
+    void OnNext()
+    {
+        if (dialogueManager == null || !dialogueManager.IsDialogueActive)
+        {
+            return;
+        }
+
+        if (dialogueManager.CurrentNodeHasChoices)
+        {
+            return;
+        }
+
+        dialogueManager.Advance();
     }
 
     private static bool TryGetInteractable(Collider hitCollider, out IInteractable interactable)
@@ -237,6 +261,29 @@ public class Player : MonoBehaviour
     public void SetDialogueMode(bool isActive)
     {
         _isDialogueMode = isActive;
+
+        if (_inputs != null)
+        {
+            _inputs.MoveInput(Vector2.zero);
+            _inputs.JumpInput(false);
+            _inputs.SprintInput(false);
+            _inputs.look = Vector2.zero;
+        }
+
+        if (firstPersonController != null)
+        {
+            firstPersonController.enabled = !isActive;
+        }
+
+        if (thirdPersonController != null)
+        {
+            thirdPersonController.enabled = !isActive;
+        }
+
+        if (topDownController != null)
+        {
+            topDownController.SetDialogueMovementLocked(isActive);
+        }
 
         if (isActive)
         {
