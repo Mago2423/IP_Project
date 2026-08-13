@@ -41,7 +41,7 @@ MonoBehaviour:
     nextNodeId: decision
   - nodeId: decision
     speaker: NPC
-    line: Would you like to conclude the Investigation and guess the Scam commited?
+    line: Should i bring in the criminal now?
     endConversation: 0
     choices:
     - text: Yes

@@ -29,7 +29,8 @@ MonoBehaviour:
     nextNodeId: line_3
   - nodeId: line_3
     speaker: Frantic Mother
-    line: "My Son is 12. Why would he ask for my bank account information\u2026  "
+    line: "My Son is 12. Why did i even think it was my son asking for my bank account
+      information\u2026  "
     endConversation: 1
     choices: []
     nextNodeId: 

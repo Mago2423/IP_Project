@@ -29,7 +29,7 @@ MonoBehaviour:
     nextNodeId: line_3
   - nodeId: line_3
     speaker: Homeless Man
-    line: "Where;s my Cash Prize That Chameleon Promised Me !?! Selling my house
+    line: "Where's my Cash Prize That Chameleon Promised Me !?! Selling my house
       thinking i\u2019ll make big money. Now what?"
     endConversation: 0
     choices: []
