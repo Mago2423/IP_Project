@@ -78,6 +78,8 @@ public class EvidenceReturnOwlSpawner : MonoBehaviour
     /// <summary>Time at which the owl is allowed to request its next path.</summary>
     private float _nextDestinationUpdate;
 
+    private bool _isSubscribedToEvidence;
+
     /// <summary>
     /// Gets references that are likely to be available before the scene starts.
     ///
@@ -102,25 +104,8 @@ public class EvidenceReturnOwlSpawner : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        if (_flowManager == null)
-        {
-            _flowManager = GameFlowManager.Instance;
-        }
-
-        if (_player == null)
-        {
-            _player = FindFirstObjectByType<Player>();
-        }
-
-        if (_flowManager != null)
-        {
-            _flowManager.EvidenceChanged += HandleEvidenceChanged;
-        }
-
-        if (_flowManager != null && _flowManager.HasRequiredEvidence)
-        {
-            SpawnOwl();
-        }
+        FindSceneReferences();
+        CheckEvidenceRequirement();
     }
 
     /// <summary>
@@ -132,9 +117,37 @@ public class EvidenceReturnOwlSpawner : MonoBehaviour
     /// </summary>
     private void OnDisable()
     {
-        if (_flowManager != null)
+        if (_flowManager != null && _isSubscribedToEvidence)
         {
             _flowManager.EvidenceChanged -= HandleEvidenceChanged;
+            _isSubscribedToEvidence = false;
+        }
+    }
+
+    private void FindSceneReferences()
+    {
+        if (_flowManager == null)
+        {
+            _flowManager = GameFlowManager.Instance;
+        }
+
+        if (_player == null)
+        {
+            _player = FindFirstObjectByType<Player>();
+        }
+
+        if (_flowManager != null && !_isSubscribedToEvidence)
+        {
+            _flowManager.EvidenceChanged += HandleEvidenceChanged;
+            _isSubscribedToEvidence = true;
+        }
+    }
+
+    private void CheckEvidenceRequirement()
+    {
+        if (_flowManager != null && _flowManager.HasRequiredEvidence)
+        {
+            SpawnOwl();
         }
     }
 
@@ -164,6 +177,12 @@ public class EvidenceReturnOwlSpawner : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (_owlInstance == null)
+        {
+            FindSceneReferences();
+            CheckEvidenceRequirement();
+        }
+
         if (_owlInstance == null || _owlAgent == null || _player == null)
         {
             return;

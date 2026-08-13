@@ -49,6 +49,12 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 
     protected virtual DialogueData ResolveDialogueData()
     {
+        AlternateDialogueSwap alternateDialogueSwap = GetComponent<AlternateDialogueSwap>();
+        if (alternateDialogueSwap != null && alternateDialogueSwap.CurrentDialogue != null)
+        {
+            return alternateDialogueSwap.CurrentDialogue;
+        }
+
         CriminalDialogueSwap dialogueSwap = GetComponent<CriminalDialogueSwap>();
         if (dialogueSwap != null && dialogueSwap.CurrentDialogue != null)
         {
