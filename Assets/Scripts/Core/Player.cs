@@ -1,3 +1,10 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Spawns the return owl after the player has collected all required evidence
+/// in the Virtual World scene.
+/// </summary>
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using StarterAssets;
@@ -5,27 +12,73 @@ using StarterAssets;
 using UnityEngine.InputSystem;
 #endif
 
+/// <summary>
+/// Coordinates player interaction, input callbacks, camera state, and dialogue-related locks.
+/// This component supports both first-person scenes and the top-down VirtualWorld controller.
+/// </summary>
 public class Player : MonoBehaviour
 {
+    /// <summary>
+    /// Tablet UI opened by the journal input action.
+    /// </summary>
     public TabletUI tabletUI;
 
     [Header("Interaction Prompt")]
+    /// <summary>
+    /// UI object shown when the player is looking at an interactable.
+    /// </summary>
     [SerializeField] private GameObject interactPromptUI;
+    /// <summary>
+    /// Tag that can make an object eligible for the interaction prompt.
+    /// </summary>
     [SerializeField] private string interactableTag = "Interactable";
 
+    /// <summary>
+    /// Camera used for first-person raycast interaction.
+    /// </summary>
     [SerializeField] private Camera playerCamera;
+    /// <summary>
+    /// Maximum distance for the first-person interaction raycast.
+    /// </summary>
     [SerializeField] private float raycastDistance = 10f;
+    /// <summary>
+    /// Dialogue manager used to track dialogue state and advance dialogue.
+    /// </summary>
     [SerializeField] private DialogueManager dialogueManager;
+    /// <summary>
+    /// First-person movement controller disabled during dialogue.
+    /// </summary>
     [SerializeField] private FirstPersonController firstPersonController;
+    /// <summary>
+    /// Third-person movement controller disabled during dialogue.
+    /// </summary>
     [SerializeField] private ThirdPersonController thirdPersonController;
+    /// <summary>
+    /// Top-down VirtualWorld controller used for movement and interaction.
+    /// </summary>
     [SerializeField] private Controller topDownController;
 
+    /// <summary>
+    /// Starter Assets input state used to control movement and cursor locking.
+    /// </summary>
     private StarterAssetsInputs _inputs;
+    /// <summary>
+    /// Whether dialogue-specific movement and cursor rules are active.
+    /// </summary>
     private bool _isDialogueMode;
-    // hit info from the last UpdateRaycast call, available for other scripts to read
+    /// <summary>
+    /// Hit information from the most recent interaction raycast.
+    /// </summary>
     public RaycastHit CurrentHit { get; private set; }
+
+    /// <summary>
+    /// Gets whether the player camera is currently pointing at a collider.
+    /// </summary>
     public bool IsHitting { get; private set; }
 
+    /// <summary>
+    /// Resolves scene references and initializes the interaction prompt.
+    /// </summary>
     private void Awake()
     {
         _inputs = GetComponent<StarterAssetsInputs>();
@@ -58,11 +111,17 @@ public class Player : MonoBehaviour
         SetInteractPromptVisible(false);
     }
 
+    /// <summary>
+    /// Applies the cursor policy for the active scene.
+    /// </summary>
     private void Start()
     {
         SetCameraLock(!IsVirtualWorldScene());
     }
 
+    /// <summary>
+    /// Maintains dialogue input state and updates first-person interaction targeting.
+    /// </summary>
     private void Update()
     {
         if (_isDialogueMode)
@@ -75,8 +134,14 @@ public class Player : MonoBehaviour
         UpdateInteractPrompt();
     }
 
+    /// <summary>
+    /// Dialogue swap used to update Jamal's conversation after evidence is complete.
+    /// </summary>
     public CriminalDialogueSwap jamalSwap;
 
+    /// <summary>
+    /// Switches Jamal's dialogue after the evidence collection sequence is complete.
+    /// </summary>
     public void OnEvidenceComplete()
     {
         if (jamalSwap != null)
@@ -85,6 +150,9 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clears movement and look input while dialogue is active.
+    /// </summary>
     private void EnforceDialogueInputLock()
     {
         if (_inputs == null)
@@ -98,6 +166,9 @@ public class Player : MonoBehaviour
         _inputs.look = Vector2.zero;
     }
 
+    /// <summary>
+    /// Updates the latest camera raycast hit used by first-person interaction.
+    /// </summary>
     private void UpdateRaycast()
     {
         if (playerCamera == null) return;
@@ -107,6 +178,9 @@ public class Player : MonoBehaviour
         CurrentHit = hit;
     }
 
+    /// <summary>
+    /// Shows the interaction prompt when the current target can be interacted with.
+    /// </summary>
     private void UpdateInteractPrompt()
     {
         if (interactPromptUI == null)
@@ -123,6 +197,12 @@ public class Player : MonoBehaviour
         SetInteractPromptVisible(shouldShowPrompt);
     }
 
+    /// <summary>
+    /// Checks whether a transform or one of its parents has the requested tag.
+    /// </summary>
+    /// <param name="target">The transform at which to begin searching.</param>
+    /// <param name="requiredTag">The tag to find.</param>
+    /// <returns>True when the tag exists in the transform hierarchy.</returns>
     private bool HasTagInHierarchy(Transform target, string requiredTag)
     {
         if (target == null || string.IsNullOrWhiteSpace(requiredTag))
@@ -144,6 +224,10 @@ public class Player : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Changes the interaction prompt's active state when necessary.
+    /// </summary>
+    /// <param name="isVisible">Whether the prompt should be visible.</param>
     private void SetInteractPromptVisible(bool isVisible)
     {
         if (interactPromptUI == null)
@@ -159,7 +243,9 @@ public class Player : MonoBehaviour
         interactPromptUI.SetActive(isVisible);
     }
 
-    // called by PlayerInput via SendMessages when CamaraLock action fires
+    /// <summary>
+    /// Handles the camera-lock input action sent by PlayerInput.
+    /// </summary>
     void OnCamaraLock()
     {
         if (_isDialogueMode)
@@ -170,7 +256,9 @@ public class Player : MonoBehaviour
         SetCameraLock();
     }
 
-    // called by PlayerInput via SendMessages when Interact action fires
+    /// <summary>
+    /// Handles the interaction input action sent by PlayerInput.
+    /// </summary>
     void OnInteract()
     {
         if (dialogueManager != null && dialogueManager.IsDialogueActive)
@@ -194,7 +282,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    // called by PlayerInput via SendMessages when Next action fires
+    /// <summary>
+    /// Advances a linear dialogue when the dialogue system is waiting for input.
+    /// </summary>
     void OnNext()
     {
         if (dialogueManager == null || !dialogueManager.IsDialogueActive)
@@ -210,6 +300,12 @@ public class Player : MonoBehaviour
         dialogueManager.Advance();
     }
 
+    /// <summary>
+    /// Finds an interactable on a collider or in its parent hierarchy.
+    /// </summary>
+    /// <param name="hitCollider">Collider to inspect.</param>
+    /// <param name="interactable">Resolved interactable, if one exists.</param>
+    /// <returns>True when an interactable is found.</returns>
     private static bool TryGetInteractable(Collider hitCollider, out IInteractable interactable)
     {
         interactable = null;
@@ -245,6 +341,9 @@ public class Player : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Opens or closes the tablet and updates the cursor state accordingly.
+    /// </summary>
     void OnJournal()
     {
         if (tabletUI == null)
@@ -256,6 +355,9 @@ public class Player : MonoBehaviour
         SetCameraLock(!tabletUI.IsOpen);
     }
 
+    /// <summary>
+    /// Forwards the pause input action to the scene's pause-menu UI.
+    /// </summary>
     void OnPause()
     {
         PauseMenuUI pauseMenu = FindFirstObjectByType<PauseMenuUI>();
@@ -265,7 +367,10 @@ public class Player : MonoBehaviour
         }
     }
 
-    // pass true to lock camera (hide cursor), false to unlock (show cursor), or no arg to toggle
+    /// <summary>
+    /// Locks or unlocks the camera cursor state.
+    /// </summary>
+    /// <param name="lockCamera">True to lock the cursor, false to unlock it, or null to toggle the current state.</param>
     public void SetCameraLock(bool? lockCamera = null)
     {
         bool currentState = _inputs != null
@@ -285,11 +390,18 @@ public class Player : MonoBehaviour
         Cursor.visible = !newState;
     }
 
+    /// <summary>
+    /// Restores the cursor behavior expected by the active scene.
+    /// </summary>
     public void RestoreDefaultCameraState()
     {
         SetCameraLock(!IsVirtualWorldScene());
     }
 
+    /// <summary>
+    /// Enables or disables dialogue mode and locks movement systems while dialogue is active.
+    /// </summary>
+    /// <param name="isActive">Whether dialogue mode should be enabled.</param>
     public void SetDialogueMode(bool isActive)
     {
         _isDialogueMode = isActive;
@@ -327,6 +439,10 @@ public class Player : MonoBehaviour
         SetCameraLock(isActive ? false : !IsVirtualWorldScene());
     }
 
+    /// <summary>
+    /// Determines whether the active scene uses VirtualWorld's unlocked cursor behavior.
+    /// </summary>
+    /// <returns>True when the active scene is VirtualWorld.</returns>
     private static bool IsVirtualWorldScene()
     {
         return string.Equals(
@@ -335,6 +451,9 @@ public class Player : MonoBehaviour
             System.StringComparison.OrdinalIgnoreCase);
     }
 
+    /// <summary>
+    /// Ensures that dialogue can be interacted with using an unlocked cursor.
+    /// </summary>
     private static void EnsureDialogueCursorState()
     {
         Cursor.lockState = CursorLockMode.None;
