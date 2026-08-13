@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6893a16f71a04c547a5b13e272c5d853, type: 3}
+  m_Name: Officer_with_Edvidence
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  dialogueId: linear_dialogue
+  nodes:
+  - nodeId: start
+    speaker: NPC
+    line: Welcome Back to the Interigation room Detective Racoon
+    endConversation: 0
+    choices: []
+    nextNodeId: line_2
+  - nodeId: line_2
+    speaker: NPC
+    line: During the interigation, you can Press "B" to Open the Tablet
+    endConversation: 0
+    choices: []
+    nextNodeId: line_3
+  - nodeId: line_3
+    speaker: NPC
+    line: With the Edvidence collected from the Digital World you can now "Accuse"
+      the scammer for what scame you think they have commited
+    endConversation: 0
+    choices: []
+    nextNodeId: line_4
+  - nodeId: line_4
+    speaker: NPC
+    line: Good luck Detective, may the scammer serve thier deserved punishment
+    endConversation: 0
+    choices: []
+    nextNodeId: decision
+  - nodeId: decision
+    speaker: NPC
+    line: Would you like to conclude the Investigation and guess the Scam commited?
+    endConversation: 0
+    choices:
+    - text: Yes
+      nextNodeId: 
+      action:
+        actionType: 0
+        stringValue: 
+    - text: No
+      nextNodeId: 
+      action:
+        actionType: 0
+        stringValue: 
+    nextNodeId: 

@@ -15,14 +15,12 @@ MonoBehaviour:
   dialogueId: linear_dialogue
   speaker: NPC
   lines:
-  - 'So According to our first victim "Frantic Mother". '
-  - 'She seemed to have fallen for a finantial scam of sorts with her bank information
-    comprimised. '
-  - 'Now, what''s strange is this line she said:'
-  - '"My Son is 12. Why would he ask for my bank account information"'
-  - This Implies that someone impersonated her son or had at the very least threatened
-    her with the false sense of urgency using her son's information!
-  includeFinalDecision: 0
+  - Welcome Back to the Interigation room Detective Racoon
+  - During the interigation, you can Press "B" to Open the Tablet
+  - With the Edvidence collected from the Digital World you can now "Accuse" the
+    scammer for what scame you think they have commited
+  - Good luck Detective, may the scammer serve thier deserved punishment
+  includeFinalDecision: 1
   decisionLine: Would you like to conclude the Investigation and guess the Scam commited?
   confirmText: Yes
   denyText: No
