@@ -15,20 +15,20 @@ MonoBehaviour:
   dialogueId: linear_dialogue
   nodes:
   - nodeId: start
-    speaker: About to Be Jobless Man
+    speaker: Jobless Man
     line: 'Ahhhhhhrggg!!! '
     endConversation: 0
     choices: []
     nextNodeId: line_2
   - nodeId: line_2
-    speaker: About to Be Jobless Man
+    speaker: Jobless Man
     line: 'How could I have thought that my Boss would be proactive enough to ask
       for the company accounting ledgers!?! '
     endConversation: 0
     choices: []
     nextNodeId: line_3
   - nodeId: line_3
-    speaker: About to Be Jobless Man
+    speaker: Jobless Man
     line: "Now that Chameleon has the company\u2019s classified information, if it\u2019s
       leaked I\u2019m done for! ask for the company accounting ledgers!?! "
     endConversation: 1

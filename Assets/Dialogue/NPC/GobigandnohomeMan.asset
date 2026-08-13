@@ -15,28 +15,28 @@ MonoBehaviour:
   dialogueId: linear_dialogue
   nodes:
   - nodeId: start
-    speaker: Go big and no home Man
+    speaker: Homeless Man
     line: It was 300 percent in profits if I had gotten that deal!
     endConversation: 0
     choices: []
     nextNodeId: line_2
   - nodeId: line_2
-    speaker: Go big and no home Man
+    speaker: Homeless Man
     line: "I deposited that money through the form, selling my house thinking i\u2019ll
       make big money. Now what?"
     endConversation: 0
     choices: []
     nextNodeId: line_3
   - nodeId: line_3
-    speaker: Go big and no home Man
-    line: "Where;s my Cash Prize That Chameleon Promised Me !?!ing my house thinking
-      i\u2019ll make big money. Now what?"
+    speaker: Homeless Man
+    line: "Where;s my Cash Prize That Chameleon Promised Me !?! Selling my house
+      thinking i\u2019ll make big money. Now what?"
     endConversation: 0
     choices: []
     nextNodeId: line_4
   - nodeId: line_4
-    speaker: Go big and no home Man
-    line: "My Money\u2026 MY HOuse\u2026"
+    speaker: Homeless Man
+    line: "My Money\u2026 MY House\u2026"
     endConversation: 1
     choices: []
     nextNodeId: 
