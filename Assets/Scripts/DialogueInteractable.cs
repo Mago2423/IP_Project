@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +9,8 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
     [SerializeField] private bool oneShot;
 
     private bool _hasTriggered;
+
+    public event Action DialogueStarted;
 
     public bool HasTriggered => _hasTriggered;
 
@@ -41,6 +44,7 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 
         manager.StartDialogue(resolvedDialogue, startNodeId, this);
         _hasTriggered = true;
+        DialogueStarted?.Invoke();
     }
 
     protected virtual DialogueData ResolveDialogueData()

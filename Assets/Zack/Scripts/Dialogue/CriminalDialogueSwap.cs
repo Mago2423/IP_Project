@@ -6,7 +6,11 @@ public class CriminalDialogueSwap : MonoBehaviour
     [SerializeField] private DialogueData evidenceDialogue;
     [SerializeField] private bool evidenceCollected;
 
-    public DialogueData CurrentDialogue => evidenceCollected ? evidenceDialogue : introDialogue;
+    public bool HasEvidenceDialogue => GameFlowManager.Instance != null
+        ? GameFlowManager.Instance.HasRequiredEvidence
+        : evidenceCollected;
+
+    public DialogueData CurrentDialogue => HasEvidenceDialogue ? evidenceDialogue : introDialogue;
 
     public void SetEvidenceCollected(bool value)
     {

@@ -17,7 +17,6 @@ public class Controller : MonoBehaviour
     [SerializeField] private float cameraPitch = 45f;
     [SerializeField, HideInInspector] private float cameraYaw = 0f;
     [SerializeField] private float cameraFollowSmooth = 12f;
-    [SerializeField, HideInInspector] private float cameraTurnSpeed = 90f;
 
     [Header("Camera Occlusion")]
     [SerializeField, HideInInspector] private bool pullCameraWhenOccluded = false;
@@ -38,6 +37,7 @@ public class Controller : MonoBehaviour
     [SerializeField, HideInInspector] private float minRetargetDistance = 0.35f;
     [SerializeField, HideInInspector] private float clickRetargetCooldown = 0.02f;
     [SerializeField, HideInInspector] private bool hardStopOnRetarget = false;
+    [SerializeField] private float navMeshClickSampleDistance = 0.25f;
 
     [Header("Interaction")]
     [SerializeField] private float interactRadius = 3f;
@@ -45,10 +45,9 @@ public class Controller : MonoBehaviour
 
     private Quaternion fixedCameraRotation;
     private float nextAllowedRetargetTime;
-    private bool isTurningLeft;
-    private bool isTurningRight;
     private readonly RaycastHit[] occlusionHits = new RaycastHit[16];
     private readonly Collider[] interactOverlapHits = new Collider[32];
+    private bool dialogueMovementLocked;
 
     private void Awake()
     {
@@ -84,14 +83,16 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        if (dialogueManager != null && dialogueManager.IsDialogueActive)
+        if (dialogueMovementLocked)
         {
-            isTurningLeft = false;
-            isTurningRight = false;
+            StopAgentMovement(resetPath: true);
             return;
         }
 
-        UpdateCameraTurnInput();
+        if (dialogueManager != null && dialogueManager.IsDialogueActive)
+        {
+            return;
+        }
 
         if (mainCamera == null || agent == null)
         {
@@ -113,24 +114,24 @@ public class Controller : MonoBehaviour
             return;
         }
 
-        if (ShouldIgnoreRetarget(hit.point))
+        if (!TryGetNavMeshPoint(hit.point, out NavMeshHit navMeshHit))
         {
             return;
         }
 
-        SetDestination(hit.point, hit.normal);
+        if (ShouldIgnoreRetarget(navMeshHit.position))
+        {
+            return;
+        }
+
+        SetDestination(navMeshHit.position, navMeshHit.normal);
     }
 
     private void OnInteract()
     {
         if (dialogueManager != null && dialogueManager.IsDialogueActive)
         {
-            if (dialogueManager.CurrentNodeHasChoices)
-            {
-                return;
-            }
-
-            dialogueManager.Advance();
+            // Keep Interact for world interaction only while dialogue is open.
             return;
         }
 
@@ -138,6 +139,16 @@ public class Controller : MonoBehaviour
         {
             StopAgentMovement(resetPath: true);
             interactable.Interact();
+        }
+    }
+
+    public void SetDialogueMovementLocked(bool isLocked)
+    {
+        dialogueMovementLocked = isLocked;
+
+        if (isLocked)
+        {
+            StopAgentMovement(resetPath: true);
         }
     }
 
@@ -218,30 +229,6 @@ public class Controller : MonoBehaviour
         mainCamera.transform.rotation = fixedCameraRotation;
     }
 
-    // called by PlayerInput via SendMessages when AKey action fires
-    private void OnAKey(InputValue value)
-    {
-        if (dialogueManager != null && dialogueManager.IsDialogueActive)
-        {
-            isTurningLeft = false;
-            return;
-        }
-
-        isTurningLeft = value != null && value.isPressed;
-    }
-
-    // called by PlayerInput via SendMessages when DKey action fires
-    private void OnDKey(InputValue value)
-    {
-        if (dialogueManager != null && dialogueManager.IsDialogueActive)
-        {
-            isTurningRight = false;
-            return;
-        }
-
-        isTurningRight = value != null && value.isPressed;
-    }
-
     private void ApplyAgentTuning()
     {
         if (!applyAgentTuning || agent == null)
@@ -259,6 +246,19 @@ public class Controller : MonoBehaviour
     {
         Ray ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
         return Physics.Raycast(ray, out hit);
+    }
+
+    private bool TryGetNavMeshPoint(Vector3 clickedPoint, out NavMeshHit navMeshHit)
+    {
+        navMeshHit = default;
+
+        if (agent == null)
+        {
+            return false;
+        }
+
+        float sampleDistance = Mathf.Max(0.01f, navMeshClickSampleDistance);
+        return NavMesh.SamplePosition(clickedPoint, out navMeshHit, sampleDistance, agent.areaMask);
     }
 
     private static bool TryGetInteractable(Collider hitCollider, out IInteractable interactable)
@@ -317,33 +317,6 @@ public class Controller : MonoBehaviour
         }
 
         nextAllowedRetargetTime = Time.time + clickRetargetCooldown;
-    }
-
-    private void UpdateCameraTurnInput()
-    {
-        if (!useFixedAngleCamera)
-        {
-            return;
-        }
-
-        float turnInput = 0f;
-        if (isTurningLeft)
-        {
-            turnInput -= 1f;
-        }
-
-        if (isTurningRight)
-        {
-            turnInput += 1f;
-        }
-
-        if (Mathf.Abs(turnInput) < Mathf.Epsilon)
-        {
-            return;
-        }
-
-        cameraYaw += turnInput * cameraTurnSpeed * Time.deltaTime;
-        RefreshFixedCameraRotation();
     }
 
     private void RefreshFixedCameraRotation()
