@@ -74,6 +74,7 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         }
 
         navMeshAgent.isStopped = true;
+        navMeshAgent.updateRotation = false;
         if (navMeshAgent.hasPath)
         {
             navMeshAgent.ResetPath();

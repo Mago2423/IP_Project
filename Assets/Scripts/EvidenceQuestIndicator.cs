@@ -18,7 +18,7 @@ public class EvidenceQuestIndicator : MonoBehaviour
 
         if (indicatorPrefab != null)
         {
-            _indicatorInstance = Instantiate(indicatorPrefab, indicatorAnchor);
+            _indicatorInstance = Instantiate(indicatorPrefab, indicatorAnchor, false);
             _indicatorInstance.name = $"QuestIndicator_{name}";
         }
 

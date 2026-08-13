@@ -83,6 +83,12 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale <= 0f)
+        {
+            StopAgentMovement(resetPath: true);
+            return;
+        }
+
         if (dialogueMovementLocked)
         {
             StopAgentMovement(resetPath: true);
@@ -129,6 +135,11 @@ public class Controller : MonoBehaviour
 
     private void OnInteract()
     {
+        if (Time.timeScale <= 0f)
+        {
+            return;
+        }
+
         if (dialogueManager != null && dialogueManager.IsDialogueActive)
         {
             // Keep Interact for world interaction only while dialogue is open.
@@ -149,6 +160,10 @@ public class Controller : MonoBehaviour
         if (isLocked)
         {
             StopAgentMovement(resetPath: true);
+        }
+        else if (agent != null)
+        {
+            agent.updateRotation = true;
         }
     }
 
@@ -173,6 +188,7 @@ public class Controller : MonoBehaviour
         }
 
         agent.isStopped = true;
+        agent.updateRotation = false;
         if (resetPath && agent.hasPath)
         {
             agent.ResetPath();
@@ -309,6 +325,7 @@ public class Controller : MonoBehaviour
         }
 
         agent.isStopped = false;
+        agent.updateRotation = true;
         agent.SetDestination(targetPoint);
 
         if (clickIndicator != null)

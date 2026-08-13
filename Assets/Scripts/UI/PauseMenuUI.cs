@@ -30,6 +30,14 @@ public class PauseMenuUI : MonoBehaviour
         ClosePauseMenu();
     }
 
+    private void LateUpdate()
+    {
+        if (_isPaused && Time.timeScale != 0f)
+        {
+            Time.timeScale = 0f;
+        }
+    }
+
     // Called by PlayerInput when the Pause action is performed.
     public void OnPause()
     {

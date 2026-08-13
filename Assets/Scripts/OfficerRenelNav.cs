@@ -60,9 +60,11 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
     {
         if (agent != null)
         {
-            agent.updateRotation = true;
-            agent.updateUpAxis = true;
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
         }
+
+        SetUprightRotation(transform.eulerAngles.y);
 
         if (patrolPoints.Count > 0)
         {
@@ -189,6 +191,28 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+    private void LateUpdate()
+    {
+        if (agent == null || !agent.enabled || agent.isStopped)
+        {
+            SetUprightRotation(transform.eulerAngles.y);
+            return;
+        }
+
+        Vector3 movementDirection = agent.desiredVelocity;
+        movementDirection.y = 0f;
+        if (movementDirection.sqrMagnitude > 0.01f)
+        {
+            float targetYaw = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
+            SetUprightRotation(targetYaw);
+        }
+    }
+
+    private void SetUprightRotation(float yaw)
+    {
+        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+    }
+
     private void MoveToNextPatrolPoint()
     {
         if (patrolPoints.Count == 0)
@@ -202,6 +226,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         if (targetPoint != null)
         {
             agent.stoppingDistance = patrolStopDistance;
+            agent.updateRotation = false;
             agent.SetDestination(targetPoint.position);
             agent.isStopped = false;
         }
@@ -219,6 +244,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         if (interrogationDoorPoint != null)
         {
             agent.stoppingDistance = doorStopDistance;
+            agent.updateRotation = false;
             agent.SetDestination(interrogationDoorPoint.position);
             agent.isStopped = false;
         }
@@ -232,6 +258,7 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
     private void StopAgentImmediately()
     {
         agent.isStopped = true;
+        agent.updateRotation = false;
 
         if (agent.hasPath)
         {

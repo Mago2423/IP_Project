@@ -7,6 +7,7 @@ public class RoamingNpc : MonoBehaviour, IInteractable
 {
     [Header("Movement")]
     [SerializeField, HideInInspector] private NavMeshAgent agent;
+    [SerializeField, HideInInspector] private Rigidbody physicsBody;
     [SerializeField] private List<Transform> roamPoints = new();
     [SerializeField] private float stopDistance = 0.75f;
     [SerializeField] private float pauseDuration = 1.5f;
@@ -32,6 +33,7 @@ public class RoamingNpc : MonoBehaviour, IInteractable
     private void Reset()
     {
         agent = GetComponent<NavMeshAgent>();
+        physicsBody = GetComponent<Rigidbody>();
     }
 
     private void Awake()
@@ -40,6 +42,13 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         {
             agent = GetComponent<NavMeshAgent>();
         }
+
+        if (physicsBody == null)
+        {
+            physicsBody = GetComponent<Rigidbody>();
+        }
+
+        ConfigurePhysicsBody();
 
         if (dialogueInteractable == null)
         {
@@ -66,12 +75,27 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
     }
 
+    private void ConfigurePhysicsBody()
+    {
+        if (physicsBody == null)
+        {
+            return;
+        }
+
+        // Prevent physics from nudging NavMesh-driven NPCs.
+        physicsBody.isKinematic = true;
+        physicsBody.useGravity = false;
+        physicsBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        physicsBody.linearVelocity = Vector3.zero;
+        physicsBody.angularVelocity = Vector3.zero;
+    }
+
     private void Start()
     {
         if (agent != null)
         {
             agent.updateRotation = true;
-            agent.updateUpAxis = true;
+            agent.updateUpAxis = false;
         }
 
         GoToNextRoamTarget();
@@ -79,13 +103,15 @@ public class RoamingNpc : MonoBehaviour, IInteractable
 
     private void FixedUpdate()
     {
-        if (agent == null || !agent.enabled)
+        if (agent == null)
         {
             return;
         }
 
         if (_isSpeaking)
         {
+            StopAgentMovement(resetPath: true);
+
             if (_dialogueManager == null)
             {
                 _dialogueManager = FindFirstObjectByType<DialogueManager>();
@@ -224,14 +250,20 @@ public class RoamingNpc : MonoBehaviour, IInteractable
 
     private void SetAgentDestination(Vector3 destination, float stoppingDistance)
     {
-        if (agent == null)
+        if (agent == null || !agent.enabled || !agent.isOnNavMesh)
+        {
+            return;
+        }
+
+        if (!NavMesh.SamplePosition(destination, out NavMeshHit navHit, 2f, agent.areaMask))
         {
             return;
         }
 
         agent.stoppingDistance = stoppingDistance;
+        agent.updateRotation = true;
         agent.isStopped = false;
-        agent.SetDestination(destination);
+        agent.SetDestination(navHit.position);
     }
 
     private void StopAgentMovement(bool resetPath)
@@ -242,6 +274,7 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
 
         agent.isStopped = true;
+        agent.updateRotation = false;
         if (resetPath && agent.hasPath)
         {
             agent.ResetPath();

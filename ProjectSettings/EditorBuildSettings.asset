@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Zack/Scenes/VirtualWorld.unity
-    guid: ba6d02ce23ee8e44b8fc38f3a239d040
+    path: Assets/Scenes/MainMenu.unity
+    guid: db04994dd6d318447ab5420838a45a3e
   - enabled: 1
     path: Assets/Scenes/TheOffice.unity
     guid: fe5fea7a6f9039d4487d98a879f9b98a
   - enabled: 1
     path: Assets/Scenes/InterrogationRoom.unity
     guid: 5e0a87dfc682e61408545b21f6bf1fa4
+  - enabled: 1
+    path: Assets/Scenes/VirtualWorld.unity
+    guid: 9eeedb729eb4a4947b6beb0e79c23a17
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
