@@ -42,6 +42,7 @@ public class GameFlowManager : MonoBehaviour
 
     public static GameFlowManager Instance { get; private set; }
     public event Action EvidenceChanged;
+    public event Action ScamSelected;
 
     public int EvidenceCount => _collectedEvidence.Count;
     public int RequiredEvidenceCount => requiredEvidenceCount;
@@ -102,16 +103,26 @@ public class GameFlowManager : MonoBehaviour
         _collectedEvidence.Clear();
         _selectedScam = ScamType.None;
         _currentState = CaseState.InGame;
+        ScamSelected?.Invoke();
     }
 
     public bool CollectEvidence(string evidenceId = "")
     {
         string resolvedId = string.IsNullOrWhiteSpace(evidenceId) ? $"evidence_{_collectedEvidence.Count + 1}" : evidenceId.Trim();
 
-        if (!_collectedEvidence.Add(resolvedId))
+        if (string.IsNullOrWhiteSpace(resolvedId))
         {
+            Debug.LogWarning("CollectEvidence was called with an empty or whitespace evidence ID.");
             return false;
         }
+
+        if (!_collectedEvidence.Add(resolvedId))
+        {
+            Debug.LogWarning($"Evidence already collected: {resolvedId}");
+            return false;
+        }
+
+        Debug.Log($"Evidence collected: {resolvedId}. Total = {_collectedEvidence.Count}/{requiredEvidenceCount}");
 
         if (HasRequiredEvidence && _currentState == CaseState.InGame)
         {
@@ -126,6 +137,8 @@ public class GameFlowManager : MonoBehaviour
     public void SelectScam(ScamType scamType)
     {
         _selectedScam = scamType;
+        ScamSelected?.Invoke();
+        Debug.Log($"Scam selected: {_selectedScam}. Evidence={_collectedEvidence.Count}/{requiredEvidenceCount}. CanAccuse={CanAccuse}.");
 
         if (HasRequiredEvidence && _currentState == CaseState.InGame)
         {
@@ -146,8 +159,11 @@ public class GameFlowManager : MonoBehaviour
 
     public bool AttemptAccusation()
     {
+        Debug.Log($"AttemptAccusation called. Evidence={_collectedEvidence.Count}/{requiredEvidenceCount}, SelectedScam={_selectedScam}, RequiredScam={requiredScam}, CurrentState={_currentState}, CanAccuse={CanAccuse}.");
+
         if (!CanAccuse)
         {
+            Debug.LogWarning($"Accusation blocked. Evidence={_collectedEvidence.Count}/{requiredEvidenceCount}, SelectedScam={_selectedScam}, CurrentState={_currentState}");
             _currentState = CaseState.Lost;
             if (!string.IsNullOrWhiteSpace(loseSceneName))
             {

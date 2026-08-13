@@ -28,6 +28,13 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
             return;
         }
 
+        // Linear NPC dialogues in VirtualWorld may not have choice actions,
+        // so trigger evidence collection directly when this object is configured for it.
+        if (TryGetComponent(out CaseFlowInteractable caseFlowInteractable))
+        {
+            caseFlowInteractable.Interact();
+        }
+
         StopMovementForDialogue();
 
         DialogueData resolvedDialogue = ResolveDialogueData();

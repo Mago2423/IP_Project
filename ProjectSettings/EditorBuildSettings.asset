@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/VirtualWorld.unity
     guid: 9eeedb729eb4a4947b6beb0e79c23a17
+  - enabled: 1
+    path: Assets/Scenes/Win.unity
+    guid: b502657d864629845adeb8fb81120776
+  - enabled: 1
+    path: Assets/Scenes/Lose.unity
+    guid: 052d5a0b91a9bda49978181f897b40f9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

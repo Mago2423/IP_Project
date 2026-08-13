@@ -39,8 +39,11 @@ public class CaseFlowInteractable : MonoBehaviour, IInteractable
         GameFlowManager flowManager = GameFlowManager.Instance != null ? GameFlowManager.Instance : FindFirstObjectByType<GameFlowManager>();
         if (flowManager == null)
         {
+            Debug.LogError($"CaseFlowInteractable on '{gameObject.name}' could not find a GameFlowManager instance.");
             return;
         }
+
+        Debug.Log($"CaseFlowInteractable triggered on '{gameObject.name}' with action '{actionType}' and evidenceId '{evidenceId}'");
 
         Execute(flowManager);
 
@@ -65,11 +68,21 @@ public class CaseFlowInteractable : MonoBehaviour, IInteractable
         Interact();
     }
 
+    private void OnMouseDown()
+    {
+        Interact();
+    }
+
     private void Execute(GameFlowManager flowManager)
     {
         switch (actionType)
         {
             case ActionType.CollectEvidence:
+                if (string.IsNullOrWhiteSpace(evidenceId))
+                {
+                    Debug.LogError($"CollectEvidence action on '{gameObject.name}' has no evidenceId assigned in the Inspector.");
+                }
+
                 flowManager.CollectEvidence(evidenceId);
                 return;
             case ActionType.SelectScam:

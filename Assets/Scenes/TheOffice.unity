@@ -2095,6 +2095,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OfficerAnimated
       objectReference: {fileID: 0}
+    - target: {fileID: 3055882100410930468, guid: b864dbbed26b46d45b91c3c2c8adcc1d, type: 3}
+      propertyPath: m_TagString
+      value: NPC
+      objectReference: {fileID: 0}
     - target: {fileID: 4505982324526906971, guid: b864dbbed26b46d45b91c3c2c8adcc1d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -2391,7 +2395,7 @@ MonoBehaviour:
   targetSceneName: InterrogationRoom
   loadingScreenUI: {fileID: 5564899695534796101}
   loadingProgressBar: {fileID: 3975424732051619324}
-  minimumLoadingScreenTime: 0.75
+  minimumLoadingScreenTime: 1
 --- !u!114 &1175503937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10052,14 +10056,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6788158439152595257, guid: 5b22088d73f593c4baf08eac67b77a80, type: 3}
   m_PrefabInstance: {fileID: 566286287870374282}
   m_PrefabAsset: {fileID: 0}
---- !u!222 &569089514029819625
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779303333087549916}
-  m_CullTransparentMesh: 1
 --- !u!224 &588310452172053900
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10881,26 +10877,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.49902344, y: 0.061279297}
   m_SizeDelta: {x: -23.73413, y: -24.772095}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &1043458537872165930
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779303333087549916}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7569042243084185052}
-  m_Father: {fileID: 2902064280768493003}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000005722, y: -379.33}
-  m_SizeDelta: {x: 707.7795, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1070234910529976985
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10984,12 +10960,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   tabletUI: {fileID: 1502435335309994101}
-  interactPromptUI: {fileID: 1779303333087549916}
+  interactPromptUI: {fileID: 6626441879457835627}
   interactableTag: Interactable
   playerCamera: {fileID: 1126522749}
   raycastDistance: 5
   dialogueManager: {fileID: 311927163}
-  firstPersonController: {fileID: 0}
+  firstPersonController: {fileID: 488710363}
   thirdPersonController: {fileID: 0}
   topDownController: {fileID: 0}
   jamalSwap: {fileID: 0}
@@ -11801,9 +11777,12 @@ MonoBehaviour:
   investmentPanel: {fileID: 4085407683692934882}
   donationPanel: {fileID: 4253443788489067945}
   accusePanel: {fileID: 0}
+  confirmationPanel: {fileID: 0}
   resultPanel: {fileID: 0}
   resultText: {fileID: 0}
   selectedScamText: {fileID: 0}
+  evidenceText: {fileID: 0}
+  accuseButton: {fileID: 0}
   tablet: {fileID: 6937459960015335326}
 --- !u!224 &1512667945706093013
 RectTransform:
@@ -12249,24 +12228,6 @@ RectTransform:
   m_AnchoredPosition: {x: -267.34485, y: -0.000091552734}
   m_SizeDelta: {x: -507.2304, y: 0.0001}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1779303333087549916
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1043458537872165930}
-  - component: {fileID: 569089514029819625}
-  - component: {fileID: 7296230474373920766}
-  m_Layer: 5
-  m_Name: Interact
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
 --- !u!1001 &1795154559706537191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14572,7 +14533,7 @@ GameObject:
   - component: {fileID: 4275499137654278209}
   - component: {fileID: 6833915110556986082}
   m_Layer: 5
-  m_Name: LoadingScreen (1)
+  m_Name: LoadingScreenVirtual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14674,7 +14635,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5561162200618528060}
-  - {fileID: 1043458537872165930}
+  - {fileID: 7569042243084185052}
   - {fileID: 988776105219827434}
   - {fileID: 331050734769964187}
   - {fileID: 7351176204567351341}
@@ -21144,12 +21105,12 @@ GameObject:
   - component: {fileID: 7268268780382298940}
   - component: {fileID: 704080549241474950}
   m_Layer: 5
-  m_Name: LoadingScreen
+  m_Name: LoadingScreenInterogation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &5586963654508529209
 GameObject:
   m_ObjectHideFlags: 0
@@ -22485,7 +22446,7 @@ RectTransform:
   m_Father: {fileID: 5198420872483139823}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -23379,7 +23340,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Loading Office
+  m_text: Loading Interogation Room
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -23406,8 +23367,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 150
-  m_fontSizeBase: 150
+  m_fontSize: 120
+  m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -23892,12 +23853,12 @@ GameObject:
   - component: {fileID: 5986126483497028348}
   - component: {fileID: 8351768952406502756}
   m_Layer: 5
-  m_Name: InteractTest
+  m_Name: InteractText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1001 &6651735486617124363
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26113,36 +26074,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7296230474373920766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1779303333087549916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!1001 &7308924633297868237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26818,11 +26749,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1043458537872165930}
+  m_Father: {fileID: 2902064280768493003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0002360344, y: 0}
+  m_AnchoredPosition: {x: 0.0002360344, y: -379.33}
   m_SizeDelta: {x: 652.97, y: 100.6487}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7575353610918369327
@@ -28310,8 +28241,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294926080
+  m_fontColor: {r: 0, g: 0.37254903, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
