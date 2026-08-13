@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04ec2bb0b53689b4caf95bf1821b0a59, type: 3}
+  m_Name: LinearDialogueTemplate 1
+  m_EditorClassIdentifier: Assembly-CSharp::LinearDialogueTemplate
+  dialogueId: linear_dialogue
+  speaker: NPC
+  lines:
+  - 'So According to our first victim "Frantic Mother". '
+  - 'She seemed to have fallen for a finantial scam of sorts with her bank information
+    comprimised. '
+  - 'Now, what''s strange is this line she said:'
+  - '"My Son is 12. Why would he ask for my bank account information"'
+  - This Implies that someone impersonated her son or had at the very least threatened
+    her with the false sense of urgency using her son's information!
+  includeFinalDecision: 0
+  decisionLine: Would you like to conclude the Investigation and guess the Scam commited?
+  confirmText: Yes
+  denyText: No
+  confirmActionType: 0
+  confirmActionValue: 
