@@ -24,7 +24,7 @@ MonoBehaviour:
     nextNodeId: line_2
   - nodeId: line_2
     speaker: Officer Renel
-    line: First, Press T to open up your Tablet. This will show you the many types
+    line: First, Press "B" to open up your Tablet. This will show you the many types
       of scams as well as the evidence they leave behind.
     endConversation: 0
     choices: []

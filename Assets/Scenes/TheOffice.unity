@@ -1219,6 +1219,63 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!1001 &481457853
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3195494349943572399, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_Name
+      value: OfficeRoomMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -791.45465
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 188.17747
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 560.355
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019498730979504758, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7440a3d55cf1c7b40a6a32718e5d7777, type: 3}
 --- !u!114 &488710363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2731,7 +2788,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f63b77d842c655f40b3ada820a70599a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AlternateDialogueSwap
-  firstVisitDialogue: {fileID: 11400000, guid: fcfc0db7c8f9aaa429864e88dd94d461, type: 2}
+  firstVisitDialogue: {fileID: 11400000, guid: da4e1b18ba67db94b9a28bb0ff5f7247, type: 2}
   afterEvidenceDialogue: {fileID: 11400000, guid: e6b30e4ce2d3f7b4ca109e19e80eda4b, type: 2}
 --- !u!114 &1270301736
 MonoBehaviour:
@@ -75929,3 +75986,4 @@ SceneRoots:
   - {fileID: 1753086334}
   - {fileID: 7723260627383290487}
   - {fileID: 1083699760}
+  - {fileID: 481457853}

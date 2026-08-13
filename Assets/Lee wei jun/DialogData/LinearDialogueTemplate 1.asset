@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: LinearDialogueTemplate 1
   m_EditorClassIdentifier: Assembly-CSharp::LinearDialogueTemplate
   dialogueId: linear_dialogue
-  speaker: NPC
+  speaker: 'Officer Renel '
   lines:
-  - Welcome Back to the Interigation room Detective Racoon
-  - During the interigation, you can Press "B" to Open the Tablet
-  - With the Edvidence collected from the Digital World you can now "Accuse" the
-    scammer for what scame you think they have commited
-  - Good luck Detective, may the scammer serve thier deserved punishment
-  includeFinalDecision: 1
+  - Welcome Detective Raccoon
+  - 'I have heard tales about you and your vast knowledge of scams '
+  - 'It is an honor to be solving this case with you '
+  - 'That said, you are new here so i will show you around and guid you through our
+    procedures '
+  - The Interogation room is this way, follow me
+  includeFinalDecision: 0
   decisionLine: Would you like to conclude the Investigation and guess the Scam commited?
   confirmText: Yes
   denyText: No
