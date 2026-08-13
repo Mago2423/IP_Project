@@ -3605,7 +3605,6 @@ MonoBehaviour:
   cameraPitch: 60
   cameraYaw: 0
   cameraFollowSmooth: 12
-  cameraTurnSpeed: 90
   pullCameraWhenOccluded: 1
   occlusionLayers:
     serializedVersion: 2
@@ -3622,6 +3621,7 @@ MonoBehaviour:
   minRetargetDistance: 0.35
   clickRetargetCooldown: 0.02
   hardStopOnRetarget: 0
+  navMeshClickSampleDistance: 0.25
   interactRadius: 3
   interactLayers:
     serializedVersion: 2
@@ -3652,6 +3652,9 @@ MonoBehaviour:
   playerCamera: {fileID: 1504959770573754412}
   raycastDistance: 80
   dialogueManager: {fileID: 0}
+  firstPersonController: {fileID: 0}
+  thirdPersonController: {fileID: 0}
+  topDownController: {fileID: 0}
   jamalSwap: {fileID: 0}
 --- !u!4 &7471214239136920175
 Transform:
