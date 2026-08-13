@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using StarterAssets;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -55,6 +56,11 @@ public class Player : MonoBehaviour
         }
 
         SetInteractPromptVisible(false);
+    }
+
+    private void Start()
+    {
+        SetCameraLock(!IsVirtualWorldScene());
     }
 
     private void Update()
@@ -247,13 +253,19 @@ public class Player : MonoBehaviour
     // pass true to lock camera (hide cursor), false to unlock (show cursor), or no arg to toggle
     public void SetCameraLock(bool? lockCamera = null)
     {
-        if (_inputs == null) return;
+        bool currentState = _inputs != null
+            ? _inputs.cursorLocked
+            : Cursor.lockState == CursorLockMode.Locked;
+        bool newState = lockCamera ?? !currentState;
 
-        bool newState = lockCamera ?? !_inputs.cursorLocked;
-        _inputs.cursorLocked = newState;
-        _inputs.cursorInputForLook = newState;
-        // flush any queued delta so the camera doesn't jump on the transition frame
-        _inputs.look = Vector2.zero;
+        if (_inputs != null)
+        {
+            _inputs.cursorLocked = newState;
+            _inputs.cursorInputForLook = newState;
+            // Flush any queued delta so the camera doesn't jump on the transition frame.
+            _inputs.look = Vector2.zero;
+        }
+
         Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !newState;
     }
@@ -291,8 +303,16 @@ public class Player : MonoBehaviour
             EnsureDialogueCursorState();
         }
 
-        // Dialogue mode keeps the camera still and unlocks the mouse for UI interaction.
-        SetCameraLock(!isActive);
+        // Dialogue always unlocks the mouse; after dialogue restore this scene's default.
+        SetCameraLock(isActive ? false : !IsVirtualWorldScene());
+    }
+
+    private static bool IsVirtualWorldScene()
+    {
+        return string.Equals(
+            SceneManager.GetActiveScene().name,
+            "VirtualWorld",
+            System.StringComparison.OrdinalIgnoreCase);
     }
 
     private static void EnsureDialogueCursorState()
