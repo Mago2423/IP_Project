@@ -429,8 +429,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameFlowManager
   mainMenuSceneName: MainMenu
   gameplaySceneName: TheOffice
-  winSceneName: 
-  loseSceneName: 
+  winSceneName: Win
+  loseSceneName: Lose
   requiredEvidenceCount: 3
   requiredScam: 1
 --- !u!4 &390317194
