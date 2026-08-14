@@ -1,34 +1,63 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Manages the player's case progress, evidence collection, scam selection,
+/// accusation result, and scene transitions for the investigation game flow.
+/// </summary>
 using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Tracks and controls the evidence and accusation progress for the current case.
+/// </summary>
 public class GameFlowManager : MonoBehaviour
 {
+    /// <summary>
+    /// Scam categories that can be selected for the current accusation.
+    /// </summary>
     public enum ScamType
     {
+        /// <summary>No scam has been selected.</summary>
         None,
+        /// <summary>A phishing scam.</summary>
         Phishing,
+        /// <summary>A lottery scam.</summary>
         Lottery,
+        /// <summary>A romance scam.</summary>
         Romance,
+        /// <summary>A job scam.</summary>
         Job,
+        /// <summary>An investment scam.</summary>
         Investment,
+        /// <summary>A donation scam.</summary>
         Donation
     }
 
+    /// <summary>
+    /// Major states in the case and scene flow.
+    /// </summary>
     public enum CaseState
     {
+        /// <summary>The main menu is active.</summary>
         MainMenu,
+        /// <summary>The player is investigating the case.</summary>
         InGame,
+        /// <summary>The player has enough evidence to make an accusation.</summary>
         ReadyToAccuse,
+        /// <summary>The player has made an accusation.</summary>
         Accused,
+        /// <summary>The player identified the correct scam.</summary>
         Won,
+        /// <summary>The player made an incorrect or incomplete accusation.</summary>
         Lost
     }
 
     [Header("Scenes")]
-    [SerializeField] private string mainMenuSceneName = "MainMenu";
-    [SerializeField] private string gameplaySceneName = "TheOffice";
+    [SerializeField] private string mainMenuSceneName = "";
+    [SerializeField] private string gameplaySceneName = "";
     [SerializeField] private string winSceneName = "";
     [SerializeField] private string loseSceneName = "";
 
@@ -40,15 +69,33 @@ public class GameFlowManager : MonoBehaviour
     private CaseState _currentState = CaseState.MainMenu;
     private ScamType _selectedScam = ScamType.None;
 
+    /// <summary>
+    /// Persistent game-flow manager instance used by other systems.
+    /// </summary>
     public static GameFlowManager Instance { get; private set; }
+
+    /// <summary>Raised when the collected evidence changes.</summary>
     public event Action EvidenceChanged;
+
+    /// <summary>Raised when the selected scam changes.</summary>
     public event Action ScamSelected;
 
+    /// <summary>Gets the number of unique evidence items collected.</summary>
     public int EvidenceCount => _collectedEvidence.Count;
+
+    /// <summary>Gets the number of evidence items required before accusing.</summary>
     public int RequiredEvidenceCount => requiredEvidenceCount;
+
+    /// <summary>Gets whether enough evidence has been collected.</summary>
     public bool HasRequiredEvidence => EvidenceCount >= requiredEvidenceCount;
+
+    /// <summary>Gets the scam currently selected by the player.</summary>
     public ScamType SelectedScam => _selectedScam;
+
+    /// <summary>Gets the current case state.</summary>
     public CaseState CurrentState => _currentState;
+
+    /// <summary>Gets whether the player can submit an accusation.</summary>
     public bool CanAccuse => HasRequiredEvidence && _selectedScam != ScamType.None && _currentState != CaseState.Won && _currentState != CaseState.Lost;
 
     private void Awake()
@@ -64,6 +111,9 @@ public class GameFlowManager : MonoBehaviour
         RefreshStateFromScene();
     }
 
+    /// <summary>
+    /// Resets the current case and loads the gameplay scene.
+    /// </summary>
     public void StartNewGame()
     {
         ResetCaseProgress();
@@ -75,6 +125,9 @@ public class GameFlowManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Clears the current case and loads the main menu scene.
+    /// </summary>
     public void ReturnToMainMenu()
     {
         ResetCaseProgress();
@@ -87,6 +140,9 @@ public class GameFlowManager : MonoBehaviour
         _currentState = CaseState.MainMenu;
     }
 
+    /// <summary>
+    /// Exits the application when running outside the Unity Editor.
+    /// </summary>
     public void QuitGame()
     {
 #if UNITY_EDITOR
@@ -98,6 +154,9 @@ public class GameFlowManager : MonoBehaviour
         Application.Quit();
     }
 
+    /// <summary>
+    /// Clears collected evidence and resets the selected scam and case state.
+    /// </summary>
     public void ResetCaseProgress()
     {
         _collectedEvidence.Clear();
@@ -106,6 +165,11 @@ public class GameFlowManager : MonoBehaviour
         ScamSelected?.Invoke();
     }
 
+    /// <summary>
+    /// Adds a unique evidence item to the current case.
+    /// </summary>
+    /// <param name="evidenceId">Identifier for the evidence item; an ID is generated when omitted.</param>
+    /// <returns>True when the evidence was added successfully.</returns>
     public bool CollectEvidence(string evidenceId = "")
     {
         string resolvedId = string.IsNullOrWhiteSpace(evidenceId) ? $"evidence_{_collectedEvidence.Count + 1}" : evidenceId.Trim();
@@ -134,6 +198,10 @@ public class GameFlowManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Selects the scam type the player intends to accuse.
+    /// </summary>
+    /// <param name="scamType">Scam category selected by the player.</param>
     public void SelectScam(ScamType scamType)
     {
         _selectedScam = scamType;
@@ -146,6 +214,11 @@ public class GameFlowManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Attempts to select a scam type from its name.
+    /// </summary>
+    /// <param name="scamName">Scam name to parse, ignoring letter case.</param>
+    /// <returns>True when the name matches a scam type.</returns>
     public bool TrySelectScam(string scamName)
     {
         if (!System.Enum.TryParse(scamName, true, out ScamType scamType))
@@ -157,6 +230,10 @@ public class GameFlowManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Evaluates the selected scam and transitions to the win or lose state.
+    /// </summary>
+    /// <returns>True when the selected scam matches the required scam.</returns>
     public bool AttemptAccusation()
     {
         Debug.Log($"AttemptAccusation called. Evidence={_collectedEvidence.Count}/{requiredEvidenceCount}, SelectedScam={_selectedScam}, RequiredScam={requiredScam}, CurrentState={_currentState}, CanAccuse={CanAccuse}.");
@@ -185,6 +262,9 @@ public class GameFlowManager : MonoBehaviour
         return isCorrectCase;
     }
 
+    /// <summary>
+    /// Marks the current scene as an active investigation scene.
+    /// </summary>
     public void MarkInGame()
     {
         if (_currentState == CaseState.Won || _currentState == CaseState.Lost)
