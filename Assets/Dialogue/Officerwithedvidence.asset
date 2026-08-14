@@ -16,20 +16,20 @@ MonoBehaviour:
   nodes:
   - nodeId: start
     speaker: Officer Renel
-    line: Welcome Back to the Interigation room Detective Racoon
+    line: Welcome Back to the Interrogation room Detective Racoon
     endConversation: 0
     choices: []
     nextNodeId: line_2
   - nodeId: line_2
     speaker: Officer Renel
-    line: During the interigation, you can Press "B" to Open the Tablet
+    line: During the Interrogation, you can Press "B" to Open the Tablet
     endConversation: 0
     choices: []
     nextNodeId: line_3
   - nodeId: line_3
     speaker: Officer Renel
     line: With the Edvidence collected from the Digital World you can now "Accuse"
-      the scammer for what scame you think they have commited
+      the scammer for what scam you think they have commited
     endConversation: 0
     choices: []
     nextNodeId: line_4
@@ -41,7 +41,7 @@ MonoBehaviour:
     nextNodeId: decision
   - nodeId: decision
     speaker: Officer Renel
-    line: Would you like to conclude the Investigation and guess the Scam commited?
+    line: Would you me to bring the criminal in?
     endConversation: 0
     choices:
     - text: Yes

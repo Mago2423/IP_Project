@@ -41,7 +41,7 @@ public class OfficerRInterrogation : MonoBehaviour
 
         if (startCriminalEnterImmediately && criminalPhaseController != null)
         {
-            criminalPhaseController.BeginEnterPhase();
+            criminalPhaseController.CallToTable();
         }
     }
 

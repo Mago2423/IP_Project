@@ -6,30 +6,22 @@ public class NpcNavPhaseController : MonoBehaviour
     public enum NpcPhase
     {
         Idle,
-        Enter,
-        Question,
-        Leave,
-        Finished
+        MovingToTable,
+        AtTable
     }
 
     [Header("Scene References")]
     public NavMeshAgent agent;
-    public Transform doorPoint;
     public Transform tablePoint;
-    public Transform exitPoint;
 
-    [Header("Phase Triggers (set from other scripts/UI later)")]
-    public bool triggerEnterPhase;
-    public bool triggerQuestionPhase;
-    public bool triggerLeavePhase;
+    [Header("Call Trigger")]
+    public bool triggerCall;
 
     [Header("Behavior")]
     public float stopDistance = 0.25f;
 
     [Header("Runtime State (read-only at runtime)")]
     [SerializeField] private NpcPhase currentPhase = NpcPhase.Idle;
-    [SerializeField] private bool reachedDoor;
-    [SerializeField] private bool reachedTable;
 
     public NpcPhase CurrentPhase => currentPhase;
 
@@ -48,162 +40,44 @@ public class NpcNavPhaseController : MonoBehaviour
 
     private void Update()
     {
-        HandleManualTriggers();
-
-        switch (currentPhase)
+        if (triggerCall)
         {
-            case NpcPhase.Enter:
-                UpdateEnterPhase();
-                break;
+            triggerCall = false;
+            CallToTable();
+        }
 
-            case NpcPhase.Question:
-                UpdateQuestionPhase();
-                break;
-
-            case NpcPhase.Leave:
-                UpdateLeavePhase();
-                break;
+        if (currentPhase == NpcPhase.MovingToTable)
+        {
+            UpdateMovementToTable();
         }
     }
 
-    private void HandleManualTriggers()
-    {
-        if (triggerEnterPhase)
-        {
-            triggerEnterPhase = false;
-            BeginEnterPhase();
-        }
-
-        if (triggerQuestionPhase)
-        {
-            triggerQuestionPhase = false;
-            BeginQuestionPhase();
-        }
-
-        if (triggerLeavePhase)
-        {
-            triggerLeavePhase = false;
-            BeginLeavePhase();
-        }
-    }
-
-    public void BeginEnterPhase()
+    public void CallToTable()
     {
         if (!CanUseAgent())
         {
             return;
         }
 
-        currentPhase = NpcPhase.Enter;
-        reachedDoor = false;
-        reachedTable = false;
+        currentPhase = NpcPhase.MovingToTable;
         agent.isStopped = false;
-
-        if (doorPoint != null)
-        {
-            agent.SetDestination(doorPoint.position);
-        }
-        else if (tablePoint != null)
-        {
-            reachedDoor = true;
-            agent.SetDestination(tablePoint.position);
-        }
-    }
-
-    public void BeginQuestionPhase()
-    {
-        if (!CanUseAgent())
-        {
-            return;
-        }
-
-        currentPhase = NpcPhase.Question;
 
         if (tablePoint != null)
         {
             agent.SetDestination(tablePoint.position);
         }
-
-        if (HasArrived())
-        {
-            agent.isStopped = true;
-        }
     }
 
-    public void BeginLeavePhase()
+    private void UpdateMovementToTable()
     {
         if (!CanUseAgent())
         {
             return;
         }
 
-        currentPhase = NpcPhase.Leave;
-        agent.isStopped = false;
-
-        if (exitPoint != null)
+        if (tablePoint != null && HasArrived())
         {
-            agent.SetDestination(exitPoint.position);
-        }
-    }
-
-    private void UpdateEnterPhase()
-    {
-        if (!CanUseAgent())
-        {
-            return;
-        }
-
-        if (!reachedDoor)
-        {
-            if (doorPoint == null)
-            {
-                reachedDoor = true;
-            }
-            else if (HasArrived())
-            {
-                reachedDoor = true;
-            }
-
-            if (reachedDoor && tablePoint != null)
-            {
-                agent.SetDestination(tablePoint.position);
-            }
-
-            return;
-        }
-
-        if (!reachedTable && tablePoint != null && HasArrived())
-        {
-            reachedTable = true;
-            agent.isStopped = true;
-        }
-    }
-
-    private void UpdateQuestionPhase()
-    {
-        if (!CanUseAgent())
-        {
-            return;
-        }
-
-        if (!HasArrived())
-        {
-            return;
-        }
-
-        agent.isStopped = true;
-    }
-
-    private void UpdateLeavePhase()
-    {
-        if (!CanUseAgent())
-        {
-            return;
-        }
-
-        if (exitPoint != null && HasArrived())
-        {
-            currentPhase = NpcPhase.Finished;
+            currentPhase = NpcPhase.AtTable;
             agent.isStopped = true;
         }
     }
