@@ -1,7 +1,17 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for TabletUI.
+/// </summary>
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Provides the tablet u i behavior used by the game systems.
+/// </summary>
 public class TabletUI : MonoBehaviour
 {
     [Header("Panels")]
@@ -21,6 +31,9 @@ public class TabletUI : MonoBehaviour
     public GameObject tablet;
     private bool _confirmationOpen;
 
+/// <summary>
+/// Performs the on enable action.
+/// </summary>
     private void OnEnable()
     {
         if (GameFlowManager.Instance != null)
@@ -34,6 +47,9 @@ public class TabletUI : MonoBehaviour
         UpdateAccuseButtonState();
     }
 
+/// <summary>
+/// Performs the on disable action.
+/// </summary>
     private void OnDisable()
     {
         if (GameFlowManager.Instance != null)
@@ -43,24 +59,36 @@ public class TabletUI : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Initializes gameplay state when the script begins running.
+/// </summary>
     private void Start()
     {
         ShowPhishingPanel();
         UpdateSelectedScamText();
     }
 
+/// <summary>
+/// Performs the handle scam selected action.
+/// </summary>
     private void HandleScamSelected()
     {
         UpdateSelectedScamText();
         UpdateAccuseButtonState();
     }
 
+/// <summary>
+/// Performs the handle evidence changed action.
+/// </summary>
     private void HandleEvidenceChanged()
     {
         UpdateEvidenceText();
         UpdateAccuseButtonState();
     }
 
+/// <summary>
+/// Performs the update accuse button state action.
+/// </summary>
     private void UpdateAccuseButtonState()
     {
         if (accuseButton == null)
@@ -71,36 +99,57 @@ public class TabletUI : MonoBehaviour
         accuseButton.interactable = GameFlowManager.Instance != null && GameFlowManager.Instance.CanAccuse;
     }
 
+/// <summary>
+/// Performs the show phishing panel action.
+/// </summary>
     public void ShowPhishingPanel()
     {
         ShowOnly(phishingPanel);
     }
 
+/// <summary>
+/// Performs the show lottery panel action.
+/// </summary>
     public void ShowLotteryPanel()
     {
         ShowOnly(lotteryPanel);
     }
 
+/// <summary>
+/// Performs the show romance panel action.
+/// </summary>
     public void ShowRomancePanel()
     {
         ShowOnly(romancePanel);
     }
 
+/// <summary>
+/// Performs the show job panel action.
+/// </summary>
     public void ShowJobPanel()
     {
         ShowOnly(jobPanel);
     }
 
+/// <summary>
+/// Performs the show investment panel action.
+/// </summary>
     public void ShowInvestmentPanel()
     {
         ShowOnly(investmentPanel);
     }
 
+/// <summary>
+/// Performs the show donation panel action.
+/// </summary>
     public void ShowDonationPanel()
     {
         ShowOnly(donationPanel);
     }
 
+/// <summary>
+/// Performs the show accuse panel action.
+/// </summary>
     public void ShowAccusePanel()
     {
         UpdateSelectedScamText();
@@ -109,6 +158,9 @@ public class TabletUI : MonoBehaviour
         ShowOnly(accusePanel);
     }
 
+/// <summary>
+/// Performs the update evidence text action.
+/// </summary>
     public void UpdateEvidenceText()
     {
         if (evidenceText == null)
@@ -125,6 +177,9 @@ public class TabletUI : MonoBehaviour
         evidenceText.text = GameFlowManager.Instance.EvidenceCount + " / " + GameFlowManager.Instance.RequiredEvidenceCount;
     }
 
+/// <summary>
+/// Performs the update selected scam text action.
+/// </summary>
     public void UpdateSelectedScamText()
     {
         if (selectedScamText == null)
@@ -144,6 +199,9 @@ public class TabletUI : MonoBehaviour
             : selectedScam.ToString().ToUpper();
     }
 
+/// <summary>
+/// Attempts to complete the accusation process.
+/// </summary>
     public void AttemptAccusation()
     {
         if (confirmationPanel != null)
@@ -165,6 +223,9 @@ public class TabletUI : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the confirm accusation action.
+/// </summary>
     public void ConfirmAccusation()
     {
         _confirmationOpen = false;
@@ -176,12 +237,18 @@ public class TabletUI : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the cancel accusation action.
+/// </summary>
     public void CancelAccusation()
     {
         _confirmationOpen = false;
         ShowAccusePanel();
     }
 
+/// <summary>
+/// Performs the show result panel action.
+/// </summary>
     public void ShowResultPanel(bool accusationCorrect)
     {
         if (resultText != null)
@@ -194,6 +261,9 @@ public class TabletUI : MonoBehaviour
         ShowOnly(resultPanel);
     }
 
+/// <summary>
+/// Performs the close tablet action.
+/// </summary>
     public void CloseTablet()
     {
         if (tablet != null)
@@ -202,6 +272,9 @@ public class TabletUI : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the show current scam panel action.
+/// </summary>
     public void ShowCurrentScamPanel()
     {
         if (GameFlowManager.Instance == null)
@@ -234,12 +307,21 @@ public class TabletUI : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the is open action.
+/// </summary>
     public bool IsOpen => tablet != null && tablet.activeSelf;
 
+/// <summary>
+/// Performs the open tablet action.
+/// </summary>
     public void OpenTablet()
     {
         tablet.SetActive(!tablet.activeSelf);
     }
+/// <summary>
+/// Performs the show only action.
+/// </summary>
     private void ShowOnly(GameObject panelToShow)
     {
         if (phishingPanel != null) phishingPanel.SetActive(panelToShow == phishingPanel || panelToShow == accusePanel || panelToShow == confirmationPanel || panelToShow == resultPanel);

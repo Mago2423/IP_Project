@@ -1,3 +1,10 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Displays dialogue text, conversation prompts, and dynamically configured
+/// response buttons for the dialogue system.
+/// </summary>
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -8,6 +15,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
 #endif
 
+/// <summary>Renders dialogue nodes and connects their UI controls to callbacks.</summary>
 public class DialogueView : MonoBehaviour
 {
     [Header("Root")]
@@ -32,12 +40,18 @@ public class DialogueView : MonoBehaviour
     private Action _onAdvance;
     private Action<int> _onChoiceSelected;
 
+/// <summary>
+/// Initializes the controller references and setup state.
+/// </summary>
     private void Awake()
     {
         EnsureEventSystem();
         Hide();
     }
 
+/// <summary>
+/// Performs the ensure event system action.
+/// </summary>
     private void EnsureEventSystem()
     {
         if (EventSystem.current != null)
@@ -54,6 +68,12 @@ public class DialogueView : MonoBehaviour
 #endif
     }
 
+    /// <summary>
+    /// Displays a dialogue node and binds callbacks for advancing or selecting choices.
+    /// </summary>
+    /// <param name="node">Dialogue node to display.</param>
+    /// <param name="onAdvance">Callback invoked by the linear advance prompt.</param>
+    /// <param name="onChoiceSelected">Callback invoked with the selected choice index.</param>
     public void ShowNode(DialogueNode node, Action onAdvance, Action<int> onChoiceSelected)
     {
         _onAdvance = onAdvance;
@@ -83,6 +103,7 @@ public class DialogueView : MonoBehaviour
         BindLinearPrompt();
     }
 
+    /// <summary>Hides the dialogue UI and clears all configured choice listeners.</summary>
     public void Hide()
     {
         if (nextPrompt != null)
@@ -109,6 +130,9 @@ public class DialogueView : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the bind linear prompt action.
+/// </summary>
     private void BindLinearPrompt()
     {
         Button button = GetPromptButton(nextPrompt);
@@ -121,6 +145,9 @@ public class DialogueView : MonoBehaviour
         button.onClick.AddListener(() => _onAdvance?.Invoke());
     }
 
+/// <summary>
+/// Performs the rebuild choice buttons action.
+/// </summary>
     private void RebuildChoiceButtons(DialogueNode node)
     {
         ClearChoices();
@@ -142,6 +169,9 @@ public class DialogueView : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the update prompt visibility action.
+/// </summary>
     private void UpdatePromptVisibility(DialogueNode node)
     {
         bool isTwoOptionNode = node.HasChoices && node.Choices.Count == 2;
@@ -162,6 +192,9 @@ public class DialogueView : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the configure two option prompts action.
+/// </summary>
     private void ConfigureTwoOptionPrompts(DialogueNode node)
     {
         if (confirmPrompt == null || cancelPrompt == null)
@@ -173,6 +206,9 @@ public class DialogueView : MonoBehaviour
         SetupPromptButton(cancelPrompt, node, 1);
     }
 
+/// <summary>
+/// Performs the setup prompt button action.
+/// </summary>
     private void SetupPromptButton(GameObject prompt, DialogueNode node, int choiceIndex)
     {
         if (prompt == null)
@@ -201,6 +237,9 @@ public class DialogueView : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the get prompt button action.
+/// </summary>
     private Button GetPromptButton(GameObject prompt)
     {
         if (prompt == null)
@@ -217,6 +256,9 @@ public class DialogueView : MonoBehaviour
         return prompt.GetComponentInChildren<Button>(true);
     }
 
+/// <summary>
+/// Performs the set mode panels action.
+/// </summary>
     private void SetModePanels(DialogueNode node)
     {
         bool hasChoices = node != null && node.HasChoices;
@@ -227,6 +269,9 @@ public class DialogueView : MonoBehaviour
         SetModePanels(showLinear: !isMultiChoiceNode, showChoice: isMultiChoiceNode);
     }
 
+/// <summary>
+/// Performs the set mode panels action.
+/// </summary>
     private void SetModePanels(bool showLinear, bool showChoice)
     {
         if (linearModePanel != null)
@@ -240,6 +285,9 @@ public class DialogueView : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Performs the try show with premade buttons action.
+/// </summary>
     private bool TryShowWithPremadeButtons(DialogueNode node)
     {
         if (premadeChoiceButtons == null || premadeChoiceButtons.Count == 0)
@@ -289,6 +337,9 @@ public class DialogueView : MonoBehaviour
         return true;
     }
 
+/// <summary>
+/// Performs the clear choices action.
+/// </summary>
     private void ClearChoices()
     {
         if (confirmPrompt != null)

@@ -1,9 +1,19 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for CameraLookOnlyController.
+/// </summary>
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
 	[RequireComponent(typeof(PlayerInput))]
+/// <summary>
+/// Provides the camera-only look behavior used in the player controller.
+/// </summary>
 	public class CameraLookOnlyController : MonoBehaviour
 	{
 		[Header("Camera")]
@@ -44,8 +54,14 @@ namespace StarterAssets
 
 		private const float _threshold = 0.01f;
 
+/// <summary>
+/// Performs the is current device mouse action.
+/// </summary>
 		private bool IsCurrentDeviceMouse => _playerInput.currentControlScheme == "KeyboardMouse";
 
+/// <summary>
+/// Initializes gameplay state when the script begins running.
+/// </summary>
 		private void Start()
 		{
 			_input = GetComponent<StarterAssetsInputs>();
@@ -65,6 +81,9 @@ namespace StarterAssets
 			transform.rotation = Quaternion.Euler(0.0f, _currentYaw, 0.0f);
 		}
 
+/// <summary>
+/// Updates the camera position after the player has moved.
+/// </summary>
 		private void LateUpdate()
 		{
 			if (_input == null)
@@ -80,6 +99,9 @@ namespace StarterAssets
 			CameraRotation();
 		}
 
+/// <summary>
+/// Performs the camera rotation action.
+/// </summary>
 		private void CameraRotation()
 		{
 			if (dialogueManager != null && dialogueManager.IsDialogueActive)
@@ -122,6 +144,9 @@ namespace StarterAssets
 			transform.rotation = Quaternion.Euler(0.0f, _currentYaw, 0.0f);
 		}
 
+/// <summary>
+/// Performs the clamp angle action.
+/// </summary>
 		private static float ClampAngle(float angle, float min, float max)
 		{
 			if (angle < -360f) angle += 360f;
@@ -129,6 +154,9 @@ namespace StarterAssets
 			return Mathf.Clamp(angle, min, max);
 		}
 
+/// <summary>
+/// Performs the normalize angle action.
+/// </summary>
 		private static float NormalizeAngle(float angle)
 		{
 			while (angle > 180f) angle -= 360f;

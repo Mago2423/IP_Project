@@ -2,9 +2,9 @@
 /// Author: Zack
 /// StudentNo: 10274404J
 /// Purpose:
-/// Manages the player's case progress, evidence collection, scam selection,
-/// accusation result, and scene transitions for the investigation game flow.
+/// <summary>
 /// </summary>
+
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -13,11 +13,17 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Tracks and controls the evidence and accusation progress for the current case.
 /// </summary>
+/// <summary>
+/// Manages the investigation flow, evidence, accusations, and scene transitions.
+/// </summary>
 public class GameFlowManager : MonoBehaviour
 {
     /// <summary>
     /// Scam categories that can be selected for the current accusation.
     /// </summary>
+/// <summary>
+/// Provides the scam type behavior used by the game systems.
+/// </summary>
     public enum ScamType
     {
         /// <summary>No scam has been selected.</summary>
@@ -39,6 +45,9 @@ public class GameFlowManager : MonoBehaviour
     /// <summary>
     /// Major states in the case and scene flow.
     /// </summary>
+/// <summary>
+/// Provides the case state behavior used by the game systems.
+/// </summary>
     public enum CaseState
     {
         /// <summary>The main menu is active.</summary>
@@ -98,6 +107,9 @@ public class GameFlowManager : MonoBehaviour
     /// <summary>Gets whether the player can submit an accusation.</summary>
     public bool CanAccuse => HasRequiredEvidence && _selectedScam != ScamType.None && _currentState != CaseState.Won && _currentState != CaseState.Lost;
 
+/// <summary>
+/// Initializes the controller references and setup state.
+/// </summary>
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -275,6 +287,9 @@ public class GameFlowManager : MonoBehaviour
         _currentState = HasRequiredEvidence ? CaseState.ReadyToAccuse : CaseState.InGame;
     }
 
+/// <summary>
+/// Performs the refresh state from scene action.
+/// </summary>
     private void RefreshStateFromScene()
     {
         string activeSceneName = SceneManager.GetActiveScene().name;

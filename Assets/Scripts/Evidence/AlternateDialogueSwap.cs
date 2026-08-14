@@ -1,7 +1,17 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for AlternateDialogueSwap.
+/// </summary>
+
 using UnityEngine;
 
 /// <summary>
 /// Chooses between an opening dialogue and a later dialogue using case progress.
+/// </summary>
+/// <summary>
+/// Swaps dialogue assets depending on the current investigation progress.
 /// </summary>
 public class AlternateDialogueSwap : MonoBehaviour
 {

@@ -1,6 +1,10 @@
-//* Author: Lee wei jun
-//* Date: 14/6/2026
-//* Description: This script manages an NPC's movement through three distinct phases using Unity's NavMesh system
+/// <summary>
+/// Author: Lee wei jun
+/// StudentNo: 10272279E
+/// Purpose:
+/// This script manages an NPC's movement through three distinct phases using Unity's NavMesh system
+/// </summary>
+
 using UnityEngine;
 using UnityEngine.AI;
 

@@ -1,11 +1,24 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for LinearDialogueTemplateBuilder.
+/// </summary>
+
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Builds linear dialogue template assets for editor-driven content creation.
+/// </summary>
 public static class LinearDialogueTemplateBuilder
 {
     [MenuItem("Tools/Dialogue/Create Linear Dialogue Template")]
+/// <summary>
+/// Creates a new dialogue template asset from the current editor selection.
+/// </summary>
     public static void CreateTemplateAsset()
     {
         string targetFolder = GetSelectionFolderPath();
@@ -21,6 +34,9 @@ public static class LinearDialogueTemplateBuilder
     }
 
     [MenuItem("Tools/Dialogue/Build DialogueData From Selected Linear Template")]
+/// <summary>
+/// Builds a generated dialogue asset from the selected template.
+/// </summary>
     public static void BuildFromSelection()
     {
         LinearDialogueTemplate template = Selection.activeObject as LinearDialogueTemplate;
@@ -105,11 +121,17 @@ public static class LinearDialogueTemplateBuilder
     }
 
     [MenuItem("Tools/Dialogue/Build DialogueData From Selected Linear Template", true)]
+/// <summary>
+/// Validates whether a dialogue template is currently selected.
+/// </summary>
     private static bool ValidateBuildFromSelection()
     {
         return Selection.activeObject is LinearDialogueTemplate;
     }
 
+/// <summary>
+/// Performs the create decision choices action.
+/// </summary>
     private static List<DialogueChoice> CreateDecisionChoices(LinearDialogueTemplate template)
     {
         List<DialogueChoice> choices = new();
@@ -131,6 +153,9 @@ public static class LinearDialogueTemplateBuilder
         return choices;
     }
 
+/// <summary>
+/// Creates a dialogue node definition for the generated dialogue asset.
+/// </summary>
     private static DialogueNode CreateNode(
         string nodeId,
         string speaker,
@@ -149,6 +174,9 @@ public static class LinearDialogueTemplateBuilder
         return node;
     }
 
+/// <summary>
+/// Creates a dialogue choice object for the generated dialogue asset.
+/// </summary>
     private static DialogueChoice CreateChoice(string text, string nextNodeId, DialogueAction action)
     {
         DialogueChoice choice = new DialogueChoice();
@@ -174,6 +202,9 @@ public static class LinearDialogueTemplateBuilder
         field.SetValue(target, value);
     }
 
+/// <summary>
+/// Performs the get selection folder path action.
+/// </summary>
     private static string GetSelectionFolderPath()
     {
         Object selectedObject = Selection.activeObject;

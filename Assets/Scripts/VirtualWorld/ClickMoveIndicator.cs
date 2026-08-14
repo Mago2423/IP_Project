@@ -1,5 +1,15 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for ClickMoveIndicator.
+/// </summary>
+
 using UnityEngine;
 
+/// <summary>
+/// Displays a temporary click marker that helps the player track movement targets.
+/// </summary>
 public class ClickMoveIndicator : MonoBehaviour
 {
     [SerializeField] private float yOffset = 0.05f;
@@ -33,6 +43,9 @@ public class ClickMoveIndicator : MonoBehaviour
         }
     }
 
+/// <summary>
+/// Displays the dialogue UI panel.
+/// </summary>
     public void Show(Vector3 worldPoint, Vector3 surfaceNormal)
     {
         transform.position = worldPoint + surfaceNormal.normalized * yOffset;

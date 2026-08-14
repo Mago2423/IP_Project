@@ -1,5 +1,15 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for DoorScript.
+/// </summary>
+
 using UnityEngine;
 
+/// <summary>
+/// Controls door interaction and animation state for playable scene objects.
+/// </summary>
 public class DoorScript : MonoBehaviour
 {
 	[SerializeField] private Animator doorAnimator;
@@ -15,6 +25,9 @@ public class DoorScript : MonoBehaviour
 /// </summary>
 	private int CharacterCount;
 
+/// <summary>
+/// Initializes the controller references and setup state.
+/// </summary>
 	private void Awake()
 	{
 		if (doorAnimator == null)
@@ -23,6 +36,9 @@ public class DoorScript : MonoBehaviour
 		}
 	}
 
+/// <summary>
+/// Performs the on trigger enter action.
+/// </summary>
 	private void OnTriggerEnter(Collider other)
 	{
 		if (!IsValidOpener(other))
@@ -34,6 +50,9 @@ public class DoorScript : MonoBehaviour
 		SetDoorOpen(true);
 	}
 
+/// <summary>
+/// Performs the on trigger exit action.
+/// </summary>
 	private void OnTriggerExit(Collider other)
 	{
 		if (!IsValidOpener(other))
@@ -48,11 +67,17 @@ public class DoorScript : MonoBehaviour
 		}
 	}
 
+/// <summary>
+/// Performs the is valid opener action.
+/// </summary>
 	private bool IsValidOpener(Collider other)
 	{
 		return other.CompareTag(playerTag) || other.CompareTag(npcTag);
 	}
 
+/// <summary>
+/// Performs the set door open action.
+/// </summary>
 	private void SetDoorOpen(bool isOpen)
 	{
 		if (doorAnimator == null)

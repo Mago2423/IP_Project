@@ -1,9 +1,19 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for OfficerJamalNav.
+/// </summary>
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+/// <summary>
+/// Controls the officer navigation path during interrogation events.
+/// </summary>
 public class OfficerJamalNav : MonoBehaviour, IInteractable
 {
     private enum OfficerState
@@ -33,11 +43,17 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
     private float _patrolPauseTimer;
     private Coroutine _dialogueSequenceCoroutine;
 
+/// <summary>
+/// Resets the NPC movement state for the current scene.
+/// </summary>
     private void Reset()
     {
         agent = GetComponent<NavMeshAgent>();
     }
 
+/// <summary>
+/// Initializes the controller references and setup state.
+/// </summary>
     private void Awake()
     {
         if (agent == null)
@@ -56,6 +72,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Initializes gameplay state when the script begins running.
+/// </summary>
     private void Start()
     {
         if (agent != null)
@@ -76,6 +95,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Updates the gameplay logic each frame.
+/// </summary>
     private void Update()
     {
         if (agent == null || !agent.enabled)
@@ -106,6 +128,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Handles the interaction trigger for this object.
+/// </summary>
     public void Interact()
     {
         if (hasStartedSequence || currentState == OfficerState.Speaking || currentState == OfficerState.MovingToDoor || currentState == OfficerState.WaitingAtDoor)
@@ -121,6 +146,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Performs the start door sequence after dialogue action.
+/// </summary>
     private void StartDoorSequenceAfterDialogue()
     {
         if (hasStartedSequence)
@@ -142,6 +170,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         _dialogueSequenceCoroutine = StartCoroutine(WaitForDialogueThenMoveToDoor());
     }
 
+/// <summary>
+/// Performs the wait for dialogue then move to door action.
+/// </summary>
     private IEnumerator WaitForDialogueThenMoveToDoor()
     {
         DialogueManager dialogueManager = FindFirstObjectByType<DialogueManager>();
@@ -155,6 +186,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         MoveToInterrogationDoor();
     }
 
+/// <summary>
+/// Performs the handle patrolling action.
+/// </summary>
     private void HandlePatrolling()
     {
         if (patrolPoints.Count == 0)
@@ -182,6 +216,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Performs the handle moving to door action.
+/// </summary>
     private void HandleMovingToDoor()
     {
         if (!agent.pathPending && agent.remainingDistance <= Mathf.Max(agent.stoppingDistance, doorStopDistance))
@@ -191,6 +228,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Updates the camera position after the player has moved.
+/// </summary>
     private void LateUpdate()
     {
         if (agent == null || !agent.enabled || agent.isStopped)
@@ -208,11 +248,17 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Performs the set upright rotation action.
+/// </summary>
     private void SetUprightRotation(float yaw)
     {
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
     }
 
+/// <summary>
+/// Performs the move to next patrol point action.
+/// </summary>
     private void MoveToNextPatrolPoint()
     {
         if (patrolPoints.Count == 0)
@@ -232,6 +278,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Performs the move to interrogation door action.
+/// </summary>
     private void MoveToInterrogationDoor()
     {
         if (agent == null)
@@ -255,6 +304,9 @@ public class OfficerJamalNav : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Performs the stop agent immediately action.
+/// </summary>
     private void StopAgentImmediately()
     {
         agent.isStopped = true;

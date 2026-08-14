@@ -1,6 +1,10 @@
-//* Author: Lee wei jun
-//* Date: 14/6/2026
-//* Description: The Script is responsible for triggering the interrogation sequence between the officer and the criminal NPC. It manages the officer's movement to a designated side position and coordinates the criminal's behavior through the NpcNavPhaseController.
+/// <summary>
+/// Author: Lee wei jun
+/// StudentNo: 10272279E
+/// Purpose:
+/// The Script is responsible for triggering the interrogation sequence between the officer and the criminal NPC. It manages the officer's movement to a designated side position and coordinates the criminal's behavior through the NpcNavPhaseController.
+/// </summary>
+
 using UnityEngine;
 using UnityEngine.AI;
 

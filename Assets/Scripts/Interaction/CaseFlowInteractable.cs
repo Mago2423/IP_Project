@@ -1,7 +1,20 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for CaseFlowInteractable.
+/// </summary>
+
 using UnityEngine;
 
+/// <summary>
+/// Triggers the case flow actions used during investigation and menu interactions.
+/// </summary>
 public class CaseFlowInteractable : MonoBehaviour, IInteractable
 {
+/// <summary>
+/// Provides the action type behavior used by the game systems.
+/// </summary>
     public enum ActionType
     {
         CollectEvidence,
@@ -29,10 +42,13 @@ public class CaseFlowInteractable : MonoBehaviour, IInteractable
 
     private bool _hasUsed;
 
+/// <summary>
+/// Handles the interaction trigger for this object.
+/// </summary>
     public void Interact()
     {
         if (_hasUsed && actionType != ActionType.StartGame && actionType != ActionType.ReturnToMainMenu && actionType != ActionType.QuitGame && actionType != ActionType.ResetCase)
-        {
+                                    {
             return;
         }
 
@@ -63,16 +79,25 @@ public class CaseFlowInteractable : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
     }
 
+/// <summary>
+/// Invokes the interact action from the UI click callback.
+/// </summary>
     public void OnClick()
     {
         Interact();
     }
 
+/// <summary>
+/// Invokes the interact action when the object is clicked.
+/// </summary>
     private void OnMouseDown()
     {
         Interact();
     }
 
+/// <summary>
+/// Executes the selected case-flow action for the current interaction.
+/// </summary>
     private void Execute(GameFlowManager flowManager)
     {
         switch (actionType)

@@ -1,11 +1,24 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for QuestionHubTemplateBuilder.
+/// </summary>
+
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Builds question hub template assets for editor-driven content creation.
+/// </summary>
 public static class QuestionHubTemplateBuilder
 {
     [MenuItem("Tools/Dialogue/Create Question Hub Template")]
+/// <summary>
+/// Creates a new dialogue template asset from the current editor selection.
+/// </summary>
     public static void CreateTemplateAsset()
     {
         string targetFolder = GetSelectionFolderPath();
@@ -21,6 +34,9 @@ public static class QuestionHubTemplateBuilder
     }
 
     [MenuItem("Tools/Dialogue/Build DialogueData From Selected Question Hub")]
+/// <summary>
+/// Builds a generated dialogue asset from the selected template.
+/// </summary>
     public static void BuildFromSelection()
     {
         QuestionHubTemplate template = Selection.activeObject as QuestionHubTemplate;
@@ -84,11 +100,17 @@ public static class QuestionHubTemplateBuilder
     }
 
     [MenuItem("Tools/Dialogue/Build DialogueData From Selected Question Hub", true)]
+/// <summary>
+/// Validates whether a dialogue template is currently selected.
+/// </summary>
     private static bool ValidateBuildFromSelection()
     {
         return Selection.activeObject is QuestionHubTemplate;
     }
 
+/// <summary>
+/// Creates a dialogue node definition for the generated dialogue asset.
+/// </summary>
     private static DialogueNode CreateNode(
         string nodeId,
         string speaker,
@@ -107,6 +129,9 @@ public static class QuestionHubTemplateBuilder
         return node;
     }
 
+/// <summary>
+/// Creates a dialogue choice object for the generated dialogue asset.
+/// </summary>
     private static DialogueChoice CreateChoice(string text, string nextNodeId)
     {
         DialogueChoice choice = new DialogueChoice();
@@ -137,6 +162,9 @@ public static class QuestionHubTemplateBuilder
         field.SetValue(target, value);
     }
 
+/// <summary>
+/// Performs the get selection folder path action.
+/// </summary>
     private static string GetSelectionFolderPath()
     {
         Object selectedObject = Selection.activeObject;

@@ -1,3 +1,10 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for VirtualWorldTestBootstrap.
+/// </summary>
+
 using UnityEngine;
 
 /// <summary>
@@ -10,6 +17,9 @@ using UnityEngine;
 ///
 /// Remove this component from the scene before making a final build if direct
 /// scene testing is no longer needed.
+/// </summary>
+/// <summary>
+/// Bootstraps the Virtual World scene in the editor for testing and quick iteration.
 /// </summary>
 public class VirtualWorldTestBootstrap : MonoBehaviour
 {

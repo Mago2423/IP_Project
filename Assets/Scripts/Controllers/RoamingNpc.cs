@@ -1,8 +1,18 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for RoamingNpc.
+/// </summary>
+
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+/// <summary>
+/// Controls roaming NPC behavior and dialogue-triggered movement pauses.
+/// </summary>
 public class RoamingNpc : MonoBehaviour, IInteractable
 {
     [Header("Movement")]
@@ -30,12 +40,18 @@ public class RoamingNpc : MonoBehaviour, IInteractable
     private Transform _playerTransform;
     private DialogueManager _dialogueManager;
 
+/// <summary>
+/// Resets the NPC movement state for the current scene.
+/// </summary>
     private void Reset()
     {
         agent = GetComponent<NavMeshAgent>();
         physicsBody = GetComponent<Rigidbody>();
     }
 
+/// <summary>
+/// Initializes the controller references and setup state.
+/// </summary>
     private void Awake()
     {
         if (agent == null)
@@ -75,6 +91,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Performs the configure physics body action.
+/// </summary>
     private void ConfigurePhysicsBody()
     {
         if (physicsBody == null)
@@ -90,6 +109,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         physicsBody.angularVelocity = Vector3.zero;
     }
 
+/// <summary>
+/// Initializes gameplay state when the script begins running.
+/// </summary>
     private void Start()
     {
         if (agent != null)
@@ -101,6 +123,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         GoToNextRoamTarget();
     }
 
+/// <summary>
+/// Updates the movement state on the physics tick.
+/// </summary>
     private void FixedUpdate()
     {
         if (agent == null)
@@ -154,6 +179,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Handles the interaction trigger for this object.
+/// </summary>
     public void Interact()
     {
         BeginDialogueInteraction();
@@ -164,6 +192,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Starts dialogue mode and stops roaming while speaking.
+/// </summary>
     public void BeginDialogueInteraction()
     {
         if (_isSpeaking)
@@ -175,6 +206,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         StopAgentMovement(resetPath: true);
     }
 
+/// <summary>
+/// Resumes roaming when the dialogue ends.
+/// </summary>
     private void ResumeRoamingAfterDialogue()
     {
         _isSpeaking = false;
@@ -184,6 +218,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         GoToNextRoamTarget();
     }
 
+/// <summary>
+/// Moves the NPC to the next valid roaming target.
+/// </summary>
     private void GoToNextRoamTarget()
     {
         if (roamPoints.Count > 0)
@@ -208,6 +245,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Attempts to move the NPC to a valid random roam point.
+/// </summary>
     private void TrySetRandomDestination()
     {
         if (agent == null)
@@ -238,6 +278,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         }
     }
 
+/// <summary>
+/// Checks whether a target position is blocked by world geometry.
+/// </summary>
     private bool IsTargetBlocked(Vector3 targetPosition)
     {
         if (_playerTransform == null)
@@ -248,6 +291,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         return Vector3.SqrMagnitude(targetPosition - _playerTransform.position) <= playerAvoidRadius * playerAvoidRadius;
     }
 
+/// <summary>
+/// Sets the agent destination and ensures it is valid.
+/// </summary>
     private void SetAgentDestination(Vector3 destination, float stoppingDistance)
     {
         if (agent == null || !agent.enabled || !agent.isOnNavMesh)
@@ -266,6 +312,9 @@ public class RoamingNpc : MonoBehaviour, IInteractable
         agent.SetDestination(navHit.position);
     }
 
+/// <summary>
+/// Stops current agent movement and optionally clears its path.
+/// </summary>
     private void StopAgentMovement(bool resetPath)
     {
         if (agent == null)

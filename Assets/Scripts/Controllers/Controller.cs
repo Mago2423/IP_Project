@@ -13,6 +13,9 @@ using UnityEngine.InputSystem;
 /// Controls the top-down VirtualWorld player, including click-to-move navigation,
 /// nearby interaction detection, and the fixed-angle camera.
 /// </summary>
+/// <summary>
+/// Controls the player movement, interaction, and camera logic in the Virtual World scene.
+/// </summary>
 public class Controller : MonoBehaviour
 {
     [Header("References")]

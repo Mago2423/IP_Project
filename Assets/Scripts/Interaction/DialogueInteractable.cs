@@ -1,7 +1,17 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for DialogueInteractable.
+/// </summary>
+
 using System;
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Represents a world object that triggers dialogue interaction when activated.
+/// </summary>
 public class DialogueInteractable : MonoBehaviour, IInteractable
 {
     [SerializeField] private DialogueData dialogueData;
@@ -12,8 +22,14 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
 
     public event Action DialogueStarted;
 
+/// <summary>
+/// Performs the has triggered action.
+/// </summary>
     public bool HasTriggered => _hasTriggered;
 
+/// <summary>
+/// Performs the on trigger enter action.
+/// </summary>
     public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -21,6 +37,9 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
             Interact();
         }
     }
+/// <summary>
+/// Handles the interaction trigger for this object.
+/// </summary>
     public void Interact()
     {
         if (oneShot && _hasTriggered)
@@ -55,6 +74,9 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         DialogueStarted?.Invoke();
     }
 
+/// <summary>
+/// Performs the face player action.
+/// </summary>
     private void FacePlayer()
     {
         Player player = FindFirstObjectByType<Player>();
@@ -82,6 +104,9 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         npcTransform.rotation = Quaternion.LookRotation(directionToPlayer, Vector3.up);
     }
 
+/// <summary>
+/// Performs the resolve dialogue data action.
+/// </summary>
     protected virtual DialogueData ResolveDialogueData()
     {
         AlternateDialogueSwap alternateDialogueSwap = GetComponent<AlternateDialogueSwap>();
@@ -99,6 +124,9 @@ public class DialogueInteractable : MonoBehaviour, IInteractable
         return dialogueData;
     }
 
+/// <summary>
+/// Performs the stop movement for dialogue action.
+/// </summary>
     private void StopMovementForDialogue()
     {
         RoamingNpc roamingNpc = GetComponentInParent<RoamingNpc>();

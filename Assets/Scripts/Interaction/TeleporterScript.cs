@@ -1,7 +1,17 @@
+/// <summary>
+/// Author: Zack
+/// StudentNo: 10274404J
+/// Purpose:
+/// Provides the core implementation for TeleporterScript.
+/// </summary>
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Teleports the player between scenes with a loading transition and safety checks.
+/// </summary>
 public class TeleporterScript : MonoBehaviour, IInteractable
 {
     [Header("Teleport Destination")]
@@ -14,6 +24,9 @@ public class TeleporterScript : MonoBehaviour, IInteractable
 
     private bool isTeleporting;
 
+/// <summary>
+/// Handles the interaction trigger for this object.
+/// </summary>
     public void Interact()
     {
         if (isTeleporting)
@@ -24,6 +37,9 @@ public class TeleporterScript : MonoBehaviour, IInteractable
         StartCoroutine(TeleportWithLoadingScreen());
     }
 
+/// <summary>
+/// Performs the teleport with loading screen action.
+/// </summary>
     private System.Collections.IEnumerator TeleportWithLoadingScreen()
     {
         isTeleporting = true;

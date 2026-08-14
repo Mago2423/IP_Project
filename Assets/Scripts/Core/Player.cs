@@ -16,6 +16,9 @@ using UnityEngine.InputSystem;
 /// Coordinates player interaction, input callbacks, camera state, and dialogue-related locks.
 /// This component supports both first-person scenes and the top-down VirtualWorld controller.
 /// </summary>
+/// <summary>
+/// Handles player interactions, dialogue locks, and scene-specific gameplay logic.
+/// </summary>
 public class Player : MonoBehaviour
 {
     /// <summary>
