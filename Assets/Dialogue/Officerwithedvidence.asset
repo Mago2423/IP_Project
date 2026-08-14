@@ -15,32 +15,32 @@ MonoBehaviour:
   dialogueId: linear_dialogue
   nodes:
   - nodeId: start
-    speaker: NPC
+    speaker: Officer Renel
     line: Welcome Back to the Interigation room Detective Racoon
     endConversation: 0
     choices: []
     nextNodeId: line_2
   - nodeId: line_2
-    speaker: NPC
+    speaker: Officer Renel
     line: During the interigation, you can Press "B" to Open the Tablet
     endConversation: 0
     choices: []
     nextNodeId: line_3
   - nodeId: line_3
-    speaker: NPC
+    speaker: Officer Renel
     line: With the Edvidence collected from the Digital World you can now "Accuse"
       the scammer for what scame you think they have commited
     endConversation: 0
     choices: []
     nextNodeId: line_4
   - nodeId: line_4
-    speaker: NPC
+    speaker: Officer Renel
     line: Good luck Detective, may the scammer serve thier deserved punishment
     endConversation: 0
     choices: []
     nextNodeId: decision
   - nodeId: decision
-    speaker: NPC
+    speaker: Officer Renel
     line: Would you like to conclude the Investigation and guess the Scam commited?
     endConversation: 0
     choices:

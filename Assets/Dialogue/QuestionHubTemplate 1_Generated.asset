@@ -15,7 +15,7 @@ MonoBehaviour:
   dialogueId: question_hub
   nodes:
   - nodeId: start
-    speaker: Jamal
+    speaker: Criminal Jamal
     line: What do you want?
     endConversation: 0
     choices:
@@ -97,7 +97,7 @@ MonoBehaviour:
     choices: []
     nextNodeId: answer_1f
   - nodeId: answer_1f
-    speaker: Jamal
+    speaker: Criminal Jamal
     line: ...
     endConversation: 0
     choices: []

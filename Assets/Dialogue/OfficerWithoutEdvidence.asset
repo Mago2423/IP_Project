@@ -34,7 +34,7 @@ MonoBehaviour:
     nextNodeId: line_4
   - nodeId: line_4
     speaker: 'Officer Renel '
-    line: 'That said, you are new here so i will show you around and guid you through
+    line: 'That said, you are new here so i will show you around and guide you through
       our procedures '
     endConversation: 0
     choices: []
